@@ -25,10 +25,10 @@ O projeto empregará tecnologias modernas e ferramentas de design para garantir 
 
 - **Planejamento:** MATLAB System Composer (estruturação e organização inicial)
 - **Desenvolvimento Web:**
-  - **Front-End:** HTML, CSS, JavaScript
+  - **Front-End:** HTML, CSS, JavaScript, Vue.js
   - **Back-End:** Node.js (JavaScript)
   - **Banco de Dados:** MySQL
-- **Design e Layout:** Adobe XD (prototipagem visual das páginas)
+- **Design e Layout:** Figma (prototipagem visual das páginas)
 
 ---
 
@@ -44,7 +44,7 @@ O desenvolvimento será realizado de forma incremental, seguindo as etapas abaix
    - Construção de um protótipo navegável para validar o fluxo de navegação e funcionalidade.
 
 3. **Design e Layout**
-   - Desenvolvimento do layout visual no Adobe XD, incluindo identidade visual e design responsivo.
+   - Desenvolvimento do layout visual no Figma, incluindo identidade visual e design responsivo.
 
 4. **Implementação**
    - Desenvolvimento das páginas básicas: Home, Reservas, Quem Somos e Cadastro.
