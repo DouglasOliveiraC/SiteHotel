@@ -64,7 +64,7 @@ Atualmente, o projeto está em andamento. Abaixo, o status das principais etapas
 - [x] Estruturação inicial do sistema.
 - [x] Definição das funcionalidades e fluxos principais.
 - [ ] Protótipo navegável.
-- [ ] Design de layout no Adobe XD.
+- [ ] Design de layout no   Figma.
 - [ ] Desenvolvimento das páginas e conexão ao banco de dados.
 - [ ] Testes e ajustes finais.
 
