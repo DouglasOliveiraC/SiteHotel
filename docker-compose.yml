@@ -1,0 +1,14 @@
+version: '3.9'
+
+services:
+  vue-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:5173" # Mapeia a porta 5173 do container para a 8080 no host
+    volumes:
+      - .:/app # Sincroniza os arquivos do projeto com o container
+      - /app/node_modules # Evita problemas de permissão no node_modules
+    stdin_open: true # Para interação no terminal, se necessário
+    tty: true # Para manter o terminal aberto
