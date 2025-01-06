@@ -8,17 +8,17 @@
 
 <script>
     import { defineComponent } from 'vue';
-    import { useHead } from '@unhead/vue'; // Gerenciador moderno de <meta> e t�tulos
+    import { useHead } from '@unhead/vue'; // Gerenciador moderno de <meta> e títulos
 
     export default defineComponent({
         name: 'NotFound',
         setup() {
             useHead({
-                title: '404 - P�gina N�o Encontrada', // Título dinâmico
+                title: '404 - Página Não Encontrada', // Título dinâmico
                 meta: [
                     { charset: 'utf-8' }, 
                     { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-                    { name: 'description', content: 'A p�gina que voc� est� tentando acessar n�o foi encontrada.' },
+                    { name: 'description', content: 'A página que você está tentando acessar não foi encontrada.' },
                 ],
             });
         },

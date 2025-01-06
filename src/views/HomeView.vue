@@ -1,13 +1,14 @@
 <template>
     <div class="home">
-        <HeaderVisitor v-if="!isLoggedIn" />
+        <!-- Renderiza o Header dependendo do estado de login -->
+        <HeaderVisitor v-if="!auth.isLoggedIn" />
         <HeaderLoggedIn v-else />
 
+        <!-- Renderiza o conteúdo principal da página -->
         <main class="content">
             <section class="welcome">
                 <h1>Bem-vindo ao HotelSite!</h1>
                 <p>Planeje sua próxima estadia conosco.</p>
-                
             </section>
 
             <section class="features">
@@ -23,30 +24,25 @@
             </section>
         </main>
 
+        <!-- Footer comum para todas as páginas -->
         <FooterCommon />
     </div>
 </template>
 
-<script>
-    import { ref } from 'vue';
+<script setup lang="ts">
+    import { onMounted } from 'vue';  // Certifique-se de importar onMounted
+    import { useAuthStore } from '@/stores/auth'; // Store de autenticação
+    import FeatureCard from '@/components/FeatureCard.vue'; // Componente de cards
     import HeaderVisitor from '@/components/HeaderVisitor.vue';
     import HeaderLoggedIn from '@/components/HeaderLoggedIn.vue';
     import FooterCommon from '@/components/FooterCommon.vue';
-    import FeatureCard from '@/components/FeatureCard.vue';
 
-    export default {
-        name: 'HomeView',
-        components: {
-            HeaderVisitor,
-            HeaderLoggedIn,
-            FooterCommon,
-            FeatureCard,
-        },
-        setup() {
-            const isLoggedIn = ref(false); // Simulando o estado de login
-            return { isLoggedIn };
-        },
-    };
+    const auth = useAuthStore(); // Acesso à store de autenticação
+
+    // Sincronizando o estado de autenticação com o Supabase ou outra fonte
+    onMounted(async () => {
+        await auth.fetchUser(); // Garante que o estado de login seja atualizado
+    });
 </script>
 
 <style scoped>

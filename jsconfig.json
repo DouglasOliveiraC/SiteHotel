@@ -5,6 +5,6 @@
       "@/*": [ "src/*" ]
     }
   },
-  "include": [ "src/**/*" ],
+  "include": [ "src/**/*", "src/server.js", "src/supabaseClient.js", "src/utils/supabase-client.js" ],
   "exclude": [ "node_modules", "dist" ]
 }

@@ -1,15 +1,26 @@
-<!-- src/components/HeaderLoggedIn.vue -->
 <script>
+    import { ref, onMounted } from 'vue';
+    import { supabase } from '@/utils/supabase-client';
     import { useAuthStore } from '@/stores/auth';
 
     export default {
         name: 'HeaderLoggedIn',
+
         setup() {
             const authStore = useAuthStore();
-            const logout = () => {
-                authStore.logout();
+            const userName = ref('');
+
+            // Atualizar estado ao montar
+            onMounted(async () => {
+                await authStore.fetchUser(); // Atualiza o estado do usuário na store
+                userName.value = authStore.user?.email || 'Usuário Anônimo'; // Substitua 'email' por outro campo do perfil, se necessário
+            });
+
+            const logout = async () => {
+                await authStore.logout();
             };
-            return { logout };
+
+            return { userName, logout };
         },
     };
 </script>
@@ -18,6 +29,7 @@
     <header>
         <nav>
             <ul class="menu">
+                <li>Bem-vindo, {{ userName }}!</li>
                 <li><router-link to="/">Início</router-link></li>
                 <li><router-link to="/reservations">Reservas</router-link></li>
                 <li><router-link to="/profile">Perfil</router-link></li>
@@ -26,8 +38,6 @@
         </nav>
     </header>
 </template>
-
-
 
 <style scoped>
     header {

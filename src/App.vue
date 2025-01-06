@@ -1,26 +1,20 @@
-<script lang="ts">
-    import { defineComponent } from 'vue';
-    import { useAuthStore } from '@/stores/auth';
-    import HeaderVisitor from '@/components/HeaderVisitor.vue';
-    import HeaderLoggedIn from '@/components/HeaderLoggedIn.vue';
-    import FooterCommon from '@/components/FooterCommon.vue';
-    
-    export default defineComponent({
-        setup() {
-            const auth = useAuthStore();
 
-            return {
-                auth,
-            };
-        },
-    });
+
+<script setup lang="ts">
+    // App.vue
 </script>
 
 <template>
     <div>
-        <HeaderVisitor v-if="!auth.isLoggedIn" />
-        <HeaderLoggedIn v-else />
+        
+
+        <!-- Conteúdo da página carregado via Vue Router -->
         <router-view />
-        <FooterCommon />
+
+        
     </div>
 </template>
+
+<style scoped>
+    /* Estilos globais serão  definidos aqui */
+</style>
