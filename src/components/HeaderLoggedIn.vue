@@ -1,27 +1,28 @@
-<script>
-    import { ref, onMounted } from 'vue';
-    import { supabase } from '@/utils/supabase-client';
-    import { useAuthStore } from '@/stores/auth';
+<!--
+  HeaderLoggedIn.vue
 
-    export default {
-        name: 'HeaderLoggedIn',
+  Componente responsável por exibir o cabeçalho para usuários autenticados.
+  Mostra o nome (ou email) do usuário, links específicos (Reservas, Perfil) e
+  um botão de logout para encerrar a sessão.
+-->
+<script setup>
+    import { computed } from 'vue';
+    import { useAuthStore } from '@/stores/auth.ts';
 
-        setup() {
-            const authStore = useAuthStore();
-            const userName = ref('');
+    const authStore = useAuthStore();
 
-            // Atualizar estado ao montar
-            onMounted(async () => {
-                await authStore.fetchUser(); // Atualiza o estado do usuário na store
-                userName.value = authStore.user?.email || 'Usuário Anônimo'; // Substitua 'email' por outro campo do perfil, se necessário
-            });
+    /**
+     * userName: Computed reativo que lê direto do estado global (authStore.user).
+     */
+    const userName = computed(() => {
+        return authStore.user?.email ?? 'Usuário Anônimo';
+    });
 
-            const logout = async () => {
-                await authStore.logout();
-            };
-
-            return { userName, logout };
-        },
+    /**
+     * Função de logout
+     */
+    const logout = async () => {
+        await authStore.logout();
     };
 </script>
 
@@ -29,17 +30,28 @@
     <header>
         <nav>
             <ul class="menu">
+                <!-- Exibe uma saudação com o nome (ou email) do usuário -->
                 <li>Bem-vindo, {{ userName }}!</li>
+
+                <!-- Links de navegação para usuários logados -->
                 <li><router-link to="/">Início</router-link></li>
                 <li><router-link to="/reservations">Reservas</router-link></li>
                 <li><router-link to="/profile">Perfil</router-link></li>
-                <li><button @click="logout">Sair</button></li>
+
+                <!-- Botão para encerrar sessão e retornar ao estado de visitante -->
+                <li>
+                    <button @click="logout">
+                        Sair
+                    </button>
+                </li>
             </ul>
         </nav>
     </header>
 </template>
 
 <style scoped>
+    /* Estilos do cabeçalho para usuários autenticados */
+
     header {
         background-color: #222;
         color: white;
@@ -52,7 +64,9 @@
         gap: 2rem;
     }
 
-    a, button {
+    /* Links e botões compartilhados */
+    a,
+    button {
         color: white;
         text-decoration: none;
         background: none;
@@ -61,7 +75,8 @@
         cursor: pointer;
     }
 
-        a:hover, button:hover {
+        a:hover,
+        button:hover {
             text-decoration: underline;
         }
 </style>

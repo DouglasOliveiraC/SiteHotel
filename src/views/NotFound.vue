@@ -8,7 +8,7 @@
 
 <script>
     import { defineComponent } from 'vue';
-    import { useHead } from '@unhead/vue'; // Gerenciador moderno de <meta> e títulos
+    import { useHead } from '@unhead/vue'; // Gerenciador de <meta> e títulos
 
     export default defineComponent({
         name: 'NotFound',

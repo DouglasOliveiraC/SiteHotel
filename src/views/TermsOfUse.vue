@@ -1,8 +1,6 @@
 ﻿<template>
     <div class="terms-of-use">
-        <!-- Header dinâmico com base no estado de login -->
-        <HeaderVisitor v-if="!isLoggedIn" />
-        <HeaderLoggedIn v-else />
+        <!-- Header dinâmico com base no estado de login no App-->
 
         <!-- Conteúdo principal -->
         <main class="content">

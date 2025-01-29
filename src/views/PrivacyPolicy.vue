@@ -1,7 +1,6 @@
 ﻿<template>
     <div class="privacy-policy">
-        <HeaderVisitor v-if="!isLoggedIn" />
-        <HeaderLoggedIn v-else />
+        <!-- Header dinâmico com base no estado de login no App-->
 
         <main class="content">
             <section class="privacy">

@@ -1,10 +1,8 @@
 <template>
     <div class="home">
-        <!-- Renderiza o Header dependendo do estado de login -->
-        <HeaderVisitor v-if="!auth.isLoggedIn" />
-        <HeaderLoggedIn v-else />
+        <!-- Header dinâmico com base no estado de login no App-->
 
-        <!-- Renderiza o conteúdo principal da página -->
+        <!-- Conteúdo principal da página -->
         <main class="content">
             <section class="welcome">
                 <h1>Bem-vindo ao HotelSite!</h1>
@@ -30,19 +28,15 @@
 </template>
 
 <script setup lang="ts">
-    import { onMounted } from 'vue';  // Certifique-se de importar onMounted
-    import { useAuthStore } from '@/stores/auth'; // Store de autenticação
-    import FeatureCard from '@/components/FeatureCard.vue'; // Componente de cards
-    import HeaderVisitor from '@/components/HeaderVisitor.vue';
-    import HeaderLoggedIn from '@/components/HeaderLoggedIn.vue';
-    import FooterCommon from '@/components/FooterCommon.vue';
+    
+    import { onMounted } from 'vue';
 
-    const auth = useAuthStore(); // Acesso à store de autenticação
+    // O objetivo é manter a verificação de login apenas no App.vue,
+    import { useAuthStore } from '@/stores/auth';
 
-    // Sincronizando o estado de autenticação com o Supabase ou outra fonte
-    onMounted(async () => {
-        await auth.fetchUser(); // Garante que o estado de login seja atualizado
-    });
+    // Componentes usados nesta página
+    import FeatureCard from '@/components/FeatureCard.vue';
+    import FooterCommon from '@/components/FooterCommon.vue';    
 </script>
 
 <style scoped>
@@ -55,7 +49,7 @@
     .content {
         flex: 1;
         display: flex;
-        flex-direction: column; 
+        flex-direction: column;
         justify-content: flex-start;
         align-items: center;
         text-align: center;
@@ -74,29 +68,6 @@
         color: #555;
     }
 
-    .cta-buttons {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        width: 100%;
-        max-width: 300px;
-    }
-
-    .cta {
-        padding: 0.75rem 1.5rem;
-        background-color: #007bff;
-        color: white;
-        text-decoration: none;
-        border-radius: 5px;
-        font-weight: bold;
-        transition: background-color 0.3s ease;
-        text-align: center;
-    }
-
-        .cta:hover {
-            background-color: #0056b3;
-        }
-
     .features {
         margin-top: 3rem;
         width: 100%;
@@ -110,7 +81,7 @@
 
     .feature-list {
         display: flex;
-        flex-direction: column; 
+        flex-direction: column;
         gap: 2rem;
         align-items: center;
         width: 100%;
@@ -124,7 +95,7 @@
 
     @media (min-width: 768px) {
         .content {
-            flex-direction: row; 
+            flex-direction: row;
             justify-content: space-around;
             align-items: flex-start;
             padding: 4rem;
@@ -135,18 +106,8 @@
             width: 45%;
         }
 
-        .cta-buttons {
-            flex-direction: row;
-            justify-content: flex-start;
-        }
-
-            .cta-buttons .cta {
-                margin-right: 1rem;
-                width: auto;
-            }
-
         .feature-list {
-            flex-direction: row; 
+            flex-direction: row;
             justify-content: space-between;
         }
 

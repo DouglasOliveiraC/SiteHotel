@@ -8,6 +8,8 @@ import PrivacyPolicy from '@/views/PrivacyPolicy.vue';
 import ContactView from '@/views/ContactView.vue';
 
 
+
+
 const routes = [
     { path: '/', name: 'HomeView', component: HomeView },
     { path: '/:pathMatch(.*)*', name: 'NotFound', component: () => import('@/views/NotFound.vue') },
@@ -15,6 +17,7 @@ const routes = [
     { path: '/terms-of-use', name: 'TermsOfUse', component: TermsOfUse },
     { path: '/privacy', name: 'PrivacyPolicy', component: PrivacyPolicy },
     { path: '/contact', name: 'ContactView', component: ContactView },
+    
 ];
 
 const router = createRouter({
