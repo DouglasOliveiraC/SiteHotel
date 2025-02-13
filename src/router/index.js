@@ -6,6 +6,9 @@ import AboutView from '@/views/AboutView.vue';
 import TermsOfUse from '@/views/TermsOfUse.vue';
 import PrivacyPolicy from '@/views/PrivacyPolicy.vue';
 import ContactView from '@/views/ContactView.vue';
+import AuthCallback from '@/views/AuthCallback.vue';
+import { useAuthStore } from '@/stores/auth';
+import Profile from '@/views/Profile.vue';
 
 
 
@@ -17,6 +20,30 @@ const routes = [
     { path: '/terms-of-use', name: 'TermsOfUse', component: TermsOfUse },
     { path: '/privacy', name: 'PrivacyPolicy', component: PrivacyPolicy },
     { path: '/contact', name: 'ContactView', component: ContactView },
+    
+    { path: '/auth/callback', name: 'AuthCallback', component: AuthCallback },
+    //{ path: '/reservations', name: 'ReservationsView', component: () => import('@/views/Reservations.vue') },
+
+    {
+        path: '/profile',
+        name: 'Profile',
+        component: Profile,
+        beforeEnter: async (to, from) => {
+            const authStore = useAuthStore();
+
+            if (!authStore.isLoggedIn) {
+                await authStore.initAuth();
+            }
+
+            if (!authStore.isLoggedIn) {
+                // Redireciona para Home
+                return { name: 'HomeView' };
+            }
+
+            // Se estiver logado, libera
+            return true;
+        },
+    },
     
 ];
 

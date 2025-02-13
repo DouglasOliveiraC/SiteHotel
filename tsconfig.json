@@ -16,6 +16,6 @@
     "allowJs": true,
     "checkJs": false
   },
-  "include": [ "src/**/*", "src/server.js", "src/supabaseClient.js", "src/utils/supabase-client.js" ],
+  "include": [ "src/**/*", "src/server.js", "src/utils/supabase-client.js" ],
   "exclude": [ "node_modules", "dist" ]
 }

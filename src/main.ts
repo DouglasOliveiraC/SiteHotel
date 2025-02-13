@@ -14,4 +14,7 @@ app.use(router); // Usa o router
 app.use(pinia); // Adicionar ao Vue o monitor de estado Pinia
 app.use(head); // Adiciona o gerenciador de metadados (UTF-8)
 
+
+console.log('[DEBUG] main.ts: Antes de montar o app');
 app.mount('#app'); // Monta o app na div com id 'app' do index.html
+console.log('[DEBUG] main.ts: Depois de montar o app');

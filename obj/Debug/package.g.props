@@ -3,7 +3,7 @@
   <PropertyGroup>
     <PackageJsonDependenciesReactOauthGoogle Condition="$(PackageJsonDependenciesReactOauthGoogle) == ''">^0.12.1</PackageJsonDependenciesReactOauthGoogle>
     <PackageJsonDependenciesSupabaseAuthJs Condition="$(PackageJsonDependenciesSupabaseAuthJs) == ''">^2.67.3</PackageJsonDependenciesSupabaseAuthJs>
-    <PackageJsonDependenciesSupabaseSupabaseJs Condition="$(PackageJsonDependenciesSupabaseSupabaseJs) == ''">^2.47.15</PackageJsonDependenciesSupabaseSupabaseJs>
+    <PackageJsonDependenciesSupabaseSupabaseJs Condition="$(PackageJsonDependenciesSupabaseSupabaseJs) == ''">^2.48.1</PackageJsonDependenciesSupabaseSupabaseJs>
     <PackageJsonDependenciesUnheadVue Condition="$(PackageJsonDependenciesUnheadVue) == ''">^1.11.14</PackageJsonDependenciesUnheadVue>
     <PackageJsonDependenciesDotenv Condition="$(PackageJsonDependenciesDotenv) == ''">^16.4.7</PackageJsonDependenciesDotenv>
     <PackageJsonDependenciesExpress Condition="$(PackageJsonDependenciesExpress) == ''">^4.21.2</PackageJsonDependenciesExpress>

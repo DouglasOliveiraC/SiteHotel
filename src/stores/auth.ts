@@ -1,106 +1,281 @@
-import { defineStore } from 'pinia';
+Ôªøimport { defineStore } from 'pinia';
 import { supabase } from '@/utils/supabase-client';
 
-// Interface para armazenar metadados do usu·rio (nome, configuraÁıes adicionais, etc.)
+/**
+ * Interface para armazenar informa√ß√µes adicionais do usu√°rio, como nome,
+ * sobrenome, CPF e quaisquer outros campos relevantes.
+ */
 interface UserMetadata {
     name?: string;
-    [key: string]: any; // Permite incluir outros campos adicionais dinamicamente
+    surname?: string;
+    cpf?: string;
+    [key: string]: any;
 }
 
-// Interface principal para o usu·rio autenticado
+/**
+ * Interface principal que representa o usu√°rio autenticado.
+ */
 interface User {
-    id: string;         // Identificador ˙nico do usu·rio no Supabase
-    name: string;       // Nome do usu·rio
-    email?: string;     // E-mail do usu·rio (opcional, dependendo da autenticaÁ„o)
-    metadata?: UserMetadata; // Metadados associados ao usu·rio
+    id: string;
+    name: string;
+    surname: string;
+    email: string;
+    metadata?: UserMetadata;
+    cpf: string;
+    address?: string;
+    city?: string;
+    state?: string;
+    zip_code?: string;
+    country?: string;
+    created_at?: string;
+    updated_at?: string;
 }
 
-// DefiniÁ„o da store de autenticaÁ„o
+/**
+ * Formato de retorno para os m√©todos de atualiza√ß√£o (sucesso ou erro).
+ */
+interface UpdateResponse {
+    success: boolean;
+    message: string;
+}
+
+/**
+ * Store respons√°vel pela autentica√ß√£o e gerenciamento de informa√ß√µes do usu√°rio.
+ */
 export const useAuthStore = defineStore('auth', {
     state: () => ({
-        isLoggedIn: false as boolean,  // Estado de autenticaÁ„o (true se o usu·rio estiver logado)
-        user: null as User | null,     // Armazena as informaÁıes do usu·rio autenticado
+        isLoggedIn: false as boolean,
+        user: null as User | null,
     }),
 
     getters: {
-        // Retorna o nome do usu·rio ou um valor padr„o caso n„o esteja autenticado
-        userName: (state) => state.user?.name || 'Usu·rio AnÙnimo',
+        userName: (state) => state.user?.name || 'Usu√°rio An√¥nimo',
     },
 
     actions: {
         /**
-         * Inicializa a autenticaÁ„o ao carregar a aplicaÁ„o.
-         * Verifica se h· uma sess„o ativa no Supabase e atualiza o estado da store.
-         * TambÈm monitora mudanÁas de sess„o automaticamente.
+         * initAuth
+         *
+         * Inicializa a autentica√ß√£o ao carregar a aplica√ß√£o:
+         * - Obt√©m a sess√£o atual.
+         * - Se houver sess√£o ativa, mapeia o usu√°rio do Supabase e realiza o login.
+         * - Configura um listener para mudan√ßas de sess√£o.
          */
         async initAuth() {
             try {
-                // Tenta obter a sess„o de usu·rio armazenada
+                let session = null;
+
+                // 1Ô∏è Tenta buscar a sess√£o diretamente do Supabase
                 const response = await supabase.auth.getSession();
 
-                if (response?.data?.session) {
-                    // Se houver uma sess„o ativa, extrai os dados do usu·rio
-                    const user = response.data.session.user;
-                    this.login({
-                        id: user.id,
-                        name: user.user_metadata?.name || 'Usu·rio AnÙnimo',
-                        email: user.email,
-                        metadata: user.user_metadata,
-                    });
+                if (response && response.data && response.data.session) {
+                    session = response.data.session;
+                    console.log('[DEBUG]initAuth() Sess√£o encontrada via Supabase:', session);
                 } else {
-                    // Se n„o houver sess„o, faz logout para limpar o estado
-                    this.logout();
+                    // 2Ô∏è Se `getSession()` falhar, tenta recuperar do localStorage
+                    const savedSession = localStorage.getItem('supabase_session');
+                    if (savedSession) {
+                        session = JSON.parse(savedSession);
+                        console.warn('[DEBUG]initAuth() Usando sess√£o salva no localStorage:', session);
+                    }
                 }
 
-                // Monitora mudanÁas no estado de autenticaÁ„o (ex.: login/logout)
+                if (session && session.user) {
+                    this.login(this.mapSupabaseUserToLocalUser(session.user));
+                } else {
+                    console.warn('[DEBUG]initAuth() Nenhuma sess√£o ativa encontrada. N√£o chamando logout.');
+                }
+
+                // Configura o listener para mudan√ßas na sess√£o
                 supabase.auth.onAuthStateChange(async (event, session) => {
-                    if (session) {
-                        const user = session.user;
-                        this.login({
-                            id: user.id,
-                            name: user.user_metadata?.name || 'Usu·rio AnÙnimo',
-                            email: user.email,
-                            metadata: user.user_metadata,
-                        });
-                    } else {
+                    console.log('[DEBUG]initAuth() Evento de autentica√ß√£o:', event, session);
+
+                    if (event === 'SIGNED_IN') {
+                        console.log('[DEBUG]initAuth() Evento SIGNED_IN: carregando usu√°rio...');
+                        if (session?.user) {
+                            this.login(this.mapSupabaseUserToLocalUser(session.user));
+                            //await this.fetchUserProfileDirectly(session);
+                        }
+                    } else if (event === 'SIGNED_OUT') {
+                        console.log('[DEBUG]initAuth() Evento SIGNED_OUT detectado. Chamando logout...');
                         this.logout();
+                    } else {
+                        console.warn('[DEBUG]initAuth() Evento inesperado:', event);
                     }
                 });
 
             } catch (error) {
-                console.error('Erro ao inicializar autenticaÁ„o:', error);
+                console.error('[DEBUG] Erro ao inicializar autentica√ß√£o:', error);
                 this.logout();
             }
         },
 
         /**
-         * Faz login do usu·rio e armazena as informaÁıes na store e no localStorage.
-         * @param user - Objeto contendo as informaÁıes do usu·rio autenticado.
+         * printUser
+         *
+         * Fun√ß√£o para debugar a sa√≠da de getUser()
+         */
+        async printUser() {
+            try {
+                const { data: { user } } = await supabase.auth.getUser();
+                console.log("Usu√°rio retornado:", user);
+            } catch (error) {
+                console.error("Erro ao obter usu√°rio:", error);
+            }
+        },
+
+        /**
+         * fetchUserProfileDirectly
+         *
+         * Busca o perfil do usu√°rio na tabela 'profiles' utilizando o userId obtido da sess√£o.
+         */
+        async fetchUserProfileDirectly(session: { user: any }) {
+            try {
+                const userId = session?.user?.id;
+                if (!userId) {
+                    console.error("[DEBUG] Nenhum userId encontrado.");
+                    return;
+                }
+
+                console.log('[DEBUG] fetchUserProfileDirectly() -> userId:', userId);
+
+                // Verifica se h√° uma sess√£o ativa antes de buscar o token
+                let accessToken = session?.access_token;
+
+                if (!accessToken) {
+                    const storedSession = localStorage.getItem('supabase_session');
+                    if (storedSession) {
+                        const parsedSession = JSON.parse(storedSession);
+                        accessToken = parsedSession.access_token;
+                        console.warn('[DEBUG] Usando token salvo localmente.');
+                    }
+                }
+
+                if (!accessToken) {
+                    console.error('[DEBUG] Erro: Nenhum token dispon√≠vel para autentica√ß√£o.');
+                    return;
+                }
+
+                const apiKey = import.meta.env.VITE_SUPABASE_KEY;
+
+                const response = await fetch(
+                    `https://itzogmezyvdtuhnitibj.supabase.co/rest/v1/profiles?id=eq.${userId}`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "apikey": apiKey,
+                            "Authorization": `Bearer ${accessToken}`,
+                            "Content-Type": "application/json"
+                        }
+                    }
+                );
+
+                if (!response.ok) {
+                    console.error("[DEBUG] Erro na requisi√ß√£o:", response.status, response.statusText);
+                    return;
+                }
+
+                const profileData = await response.json();
+                console.log('[DEBUG] Resposta da API:', profileData);
+
+                if (!Array.isArray(profileData) || profileData.length === 0) {
+                    console.warn('[DEBUG] Nenhum perfil encontrado.');
+                    return;
+                }
+
+                this.user = { ...this.user, ...profileData[0] };
+                console.log('[DEBUG] Perfil carregado com sucesso:', this.user);
+            } catch (err) {
+                console.error('[DEBUG] fetchUserProfileDirectly() Erro inesperado:', err);
+            }
+        },
+
+        /**
+         * login
+         *
+         * Realiza o login do usu√°rio:
+         * - Atualiza o estado local e armazena os dados no localStorage.
          */
         async login(user: User) {
             this.isLoggedIn = true;
             this.user = user;
-
-            // Armazena o usu·rio localmente para persistÍncia de sess„o
             localStorage.setItem('user', JSON.stringify(user));
-
-            console.log('Usu·rio logado com sucesso:', user);
+            console.log('Usu√°rio autenticado com sucesso:', user);
         },
 
         /**
-         * Faz logout do usu·rio, limpando o estado local e chamando o Supabase.
+         * logout
+         *
+         * Realiza o logout do usu√°rio:
+         * - Limpa o estado local, remove os dados do localStorage e encerra a sess√£o no Supabase.
          */
         async logout() {
-            this.isLoggedIn = false;
-            this.user = null;
+            try {
+                const accessToken = localStorage.getItem('supabase_session')
+                    ? JSON.parse(localStorage.getItem('supabase_session')!).access_token
+                    : null;
 
-            // Remove os dados armazenados localmente
-            localStorage.removeItem('user');
+                if (!accessToken) {
+                    console.warn('[DEBUG] Nenhum token encontrado. O usu√°rio pode j√° estar deslogado.');
+                } else {
+                    const apiKey = import.meta.env.VITE_SUPABASE_KEY;
 
-            // Encerra a sess„o no Supabase
-            await supabase.auth.signOut();
+                    // Realiza a requisi√ß√£o de logout via fetch
+                    const response = await fetch("https://itzogmezyvdtuhnitibj.supabase.co/auth/v1/logout", {
+                        method: "POST",
+                        headers: {
+                            "apikey": apiKey,
+                            "Authorization": `Bearer ${accessToken}`,
+                            "Content-Type": "application/json"
+                        }
+                    });
 
-            console.log('Usu·rio deslogado.');
+                    if (!response.ok) {
+                        console.error('[DEBUG] Erro ao fazer logout:', response.status, response.statusText);
+                    } else {
+                        console.log('[DEBUG] Logout realizado com sucesso.');
+                    }
+                }
+
+                // Remove a sess√£o localmente para garantir que o usu√°rio √© deslogado da UI
+                this.isLoggedIn = false;
+                this.user = null;
+                localStorage.removeItem('supabase_session'); // Removendo sess√£o salva
+            } catch (err) {
+                console.error('[DEBUG] Exce√ß√£o durante logout:', err);
+            }
+        },
+
+
+        /**
+         * mapSupabaseUserToLocalUser
+         *
+         * Converte o objeto 'user' retornado pelo Supabase para o formato da nossa interface local.
+         */
+        mapSupabaseUserToLocalUser(supabaseUser: any): User {
+            return {
+                id: supabaseUser.id,
+                name: supabaseUser.user_metadata?.name ?? 'Usu√°rio An√¥nimo',
+                surname: supabaseUser.user_metadata?.surname ?? '',
+                email: supabaseUser.email ?? '',
+                metadata: supabaseUser.user_metadata,
+                cpf: supabaseUser.user_metadata?.cpf ?? '',
+            };
+        },
+
+        /**
+         * createEmptyUser
+         *
+         * Cria um objeto User vazio com valores m√≠nimos, dado um userId.
+         */
+        createEmptyUser(userId: string): User {
+            return {
+                id: userId,
+                name: '',
+                surname: '',
+                email: '',
+                cpf: '',
+            };
         },
     },
 });

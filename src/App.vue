@@ -1,62 +1,68 @@
+Ôªø<!-- App.vue -->
 <script setup lang="ts">
-    /**
-     * App.vue
-     *
-     * Componente raiz que gerencia:
-     * - ExibiÁ„o de cabeÁalho (visitante vs. logado),
-     * - Controle do popup de login,
-     * - Rotas (router-view).
-     */
-
     import { ref, onMounted, computed } from 'vue';
     import { useAuthStore } from '@/stores/auth';
     import HeaderVisitor from '@/components/HeaderVisitor.vue';
     import HeaderLoggedIn from '@/components/HeaderLoggedIn.vue';
     import LoginPopup from '@/components/LoginPopup.vue';
-    import { supabase } from '@/utils/supabase-client'
-    
-    /**
-     * Exibe ou oculta o popup de login/registro.
-     */
+
+    const authStore = useAuthStore();
+    const appLoading = ref(true);
     const showLoginPopup = ref(false);
 
-    /**
-     * Store de autenticaÁ„o, gerenciada por Pinia.
-     */
-    const authStore = useAuthStore();
-
-    /**
-     * Boa pr·tica: usar 'computed' para derivar se est· logado.
-     * Assim, qualquer mudanÁa em 'auth.user' È reativa e reflete imediatamente no template.
-     */
     const isLoggedIn = computed(() => !!authStore.user);
 
-    /**
-     * onMounted:
-     *  - Dispara a busca inicial do usu·rio na store (ex.: validaÁ„o de token, etc.).
-     *  - Garante que 'auth.user' ser· definido (ou null) ao carregar a aplicaÁ„o.
-     */
     onMounted(async () => {
-        await authStore.initAuth();
+        console.log('[DEBUG] App.vue: onMounted');
+        try {
+            await authStore.initAuth();
+        } catch (error) {
+            console.error('Erro ao inicializar a aplica√ß√£o:', error);
+        } finally {
+            appLoading.value = false;
+        }
     });
 </script>
 
 <template>
-    <div>
-        <!-- Header muda dinamicamente conforme 'isLoggedIn' -->
-        <HeaderVisitor v-if="!authStore.isLoggedIn" @openLoginPopup="showLoginPopup = true" />
+    <div class="app-container">
+        <!-- Se n√£o estiver logado, exibe o HeaderVisitor e escuta o evento -->
+        <HeaderVisitor v-if="!isLoggedIn" @openLoginPopup="showLoginPopup = true" />
+        <!-- Se estiver logado, exibe o HeaderLoggedIn -->
         <HeaderLoggedIn v-else />
 
-
-        <!-- Conte˙do principal (rotas) -->
-        <router-view @openLoginPopup="showLoginPopup = true" />
-
-        <!-- Popup de Login/Registro -->
-        <LoginPopup :show="showLoginPopup"
-                    @close="showLoginPopup = false" />
+        <main>
+            <div v-if="appLoading" class="loading-screen">
+                <p>Carregando aplica√ß√£o...</p>
+            </div>
+            <div v-else>
+                <router-view @openLoginPopup="showLoginPopup = true" />
+                <!-- O componente LoginPopup √© controlado pela vari√°vel showLoginPopup -->
+                <LoginPopup :show="showLoginPopup" @close="showLoginPopup = false" />
+            </div>
+        </main>
     </div>
 </template>
 
 <style scoped>
-    /* Estilos globais podem ser definidos aqui ou em arquivos separados */
+    .app-container {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    main {
+        flex: 1;
+    }
+
+    .loading-screen {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 70vh;
+        font-weight: bold;
+        font-size: 1.2rem;
+        color: #555;
+        background-color: #fafafa;
+    }
 </style>

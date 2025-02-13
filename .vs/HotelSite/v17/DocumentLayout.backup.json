@@ -3,23 +3,45 @@
   "WorkspaceRootPath": "C:\\Users\\douol\\source\\repos\\HotelSite\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|c:\\users\\douol\\source\\repos\\hotelsite\\src\\components\\reservationsview.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|solutionrelative:src\\components\\reservationsview.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|c:\\users\\douol\\source\\repos\\hotelsite\\src\\views\\profile.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|solutionrelative:src\\views\\profile.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|c:\\users\\douol\\source\\repos\\hotelsite\\vite.config.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|solutionrelative:vite.config.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+      "AbsoluteMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|c:\\users\\douol\\source\\repos\\hotelsite\\src\\router\\index.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|solutionrelative:src\\router\\index.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|c:\\users\\douol\\source\\repos\\hotelsite\\src\\components\\headerloggedin.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|solutionrelative:src\\components\\headerloggedin.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|c:\\users\\douol\\source\\repos\\hotelsite\\src\\stores\\auth.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|solutionrelative:src\\stores\\auth.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
     }
   ],
   "DocumentGroupContainers": [
     {
-      "Orientation": 1,
+      "Orientation": 0,
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedHeight": 162,
-          "SelectedChildIndex": 6,
+          "DockedWidth": 350,
+          "SelectedChildIndex": 8,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "auth.ts",
+              "DocumentMoniker": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\stores\\auth.ts",
+              "RelativeDocumentMoniker": "src\\stores\\auth.ts",
+              "ToolTip": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\stores\\auth.ts",
+              "RelativeToolTip": "src\\stores\\auth.ts",
+              "ViewState": "AgIAAAgBAAAAAAAAAAAAABEBAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-02-01T16:44:30.707Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
@@ -42,35 +64,53 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "HeaderLoggedIn.vue",
+              "DocumentMoniker": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\components\\HeaderLoggedIn.vue",
+              "RelativeDocumentMoniker": "src\\components\\HeaderLoggedIn.vue",
+              "ToolTip": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\components\\HeaderLoggedIn.vue",
+              "RelativeToolTip": "src\\components\\HeaderLoggedIn.vue",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
+              "WhenOpened": "2025-02-11T14:25:06.11Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "vite.config.js",
-              "DocumentMoniker": "C:\\Users\\douol\\source\\repos\\HotelSite\\vite.config.js",
-              "RelativeDocumentMoniker": "vite.config.js",
-              "ToolTip": "C:\\Users\\douol\\source\\repos\\HotelSite\\vite.config.js",
-              "RelativeToolTip": "vite.config.js",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "Title": "index.js",
+              "DocumentMoniker": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\router\\index.js",
+              "RelativeDocumentMoniker": "src\\router\\index.js",
+              "ToolTip": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\router\\index.js",
+              "RelativeToolTip": "src\\router\\index.js",
+              "ViewState": "AgIAACoAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-01-23T18:16:15.679Z"
+              "WhenOpened": "2025-02-06T18:07:08.226Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "ReservationsView.vue",
-              "DocumentMoniker": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\components\\ReservationsView.vue",
-              "RelativeDocumentMoniker": "src\\components\\ReservationsView.vue",
-              "ToolTip": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\components\\ReservationsView.vue",
-              "RelativeToolTip": "src\\components\\ReservationsView.vue",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAAAgAAAAUAAAAAAAAAA==",
+              "Title": "Profile.vue",
+              "DocumentMoniker": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\views\\Profile.vue",
+              "RelativeDocumentMoniker": "src\\views\\Profile.vue",
+              "ToolTip": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\views\\Profile.vue",
+              "RelativeToolTip": "src\\views\\Profile.vue",
+              "ViewState": "AgIAAEUAAAAAAAAAAAAAAEwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
-              "WhenOpened": "2025-01-16T15:59:53.871Z",
+              "WhenOpened": "2025-02-06T16:24:22.145Z",
               "EditorCaption": ""
             }
           ]
         },
         {
-          "DockedHeight": 44,
+          "DockedWidth": 50,
           "SelectedChildIndex": -1,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
@@ -78,10 +118,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:2:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
             }
           ]
         }
