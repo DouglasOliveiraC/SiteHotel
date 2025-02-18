@@ -1,85 +1,85 @@
 # **Desenvolvimento de um Site Completo para Hotel**
 
-Este projeto consiste na criação de um site básico e completo para um hotel, com foco no planejamento, prototipagem e implementação de funcionalidades essenciais. O objetivo é fornecer uma solução prática, funcional e escalável que atenda às principais demandas de um hotel, como gerenciamento de reservas, cadastro de usuários e integração futura com sistemas de pagamento.
+Este projeto consiste na criaÃ§Ã£o de um site bÃ¡sico e completo para um hotel, com foco no planejamento, prototipagem e implementaÃ§Ã£o de funcionalidades essenciais. O objetivo Ã© fornecer uma soluÃ§Ã£o prÃ¡tica, funcional e escalÃ¡vel que atenda Ã s principais demandas de um hotel, como gerenciamento de reservas, cadastro de usuÃ¡rios e integraÃ§Ã£o futura com sistemas de pagamento.
 
-Este trabalho faz parte das atividades do curso de **Pós-Graduação em Desenvolvimento Full Stack** da **PUC-RS**, com o intuito de aplicar boas práticas de desenvolvimento web e organização de sistemas.
+Este trabalho faz parte das atividades do curso de **PÃ³s-GraduaÃ§Ã£o em Desenvolvimento Full Stack** da **PUC-RS**, com o intuito de aplicar boas prÃ¡ticas de desenvolvimento web e organizaÃ§Ã£o de sistemas.
 
 ---
 
-## **Descrição do Projeto**
+## **DescriÃ§Ã£o do Projeto**
 
-O site será estruturado para oferecer uma experiência amigável e eficiente tanto para clientes quanto para administradores. A organização inicial do projeto foi realizada utilizando **MATLAB System Composer** para estruturar e esquematizar os componentes do sistema e seu comportamento, garantindo que o planejamento seja claro e bem definido antes da implementação.
+O site serÃ¡ estruturado para oferecer uma experiÃªncia amigÃ¡vel e eficiente tanto para clientes quanto para administradores. A organizaÃ§Ã£o inicial do projeto foi realizada utilizando **MATLAB System Composer** para estruturar e esquematizar os componentes do sistema e seu comportamento, garantindo que o planejamento seja claro e bem definido antes da implementaÃ§Ã£o.
 
 ### **Principais funcionalidades previstas:**
-- **Página inicial (Home):** Apresentação geral do hotel e seus serviços.
-- **Reservas:** Sistema para consulta de disponibilidade e realização de reservas.
-- **Quem Somos:** Página institucional com informações sobre o hotel e sua equipe.
-- **Cadastro de Usuários:** Área para registro e gerenciamento de contas e reservas.
-- **Integração com sistemas de pagamento:** Planejada para implementação em etapas futuras.
+- **PÃ¡gina inicial (Home):** ApresentaÃ§Ã£o geral do hotel e seus serviÃ§os.
+- **Reservas:** Sistema para consulta de disponibilidade e realizaÃ§Ã£o de reservas.
+- **Quem Somos:** PÃ¡gina institucional com informaÃ§Ãµes sobre o hotel e sua equipe.
+- **Cadastro de UsuÃ¡rios:** Ãrea para registro e gerenciamento de contas e reservas.
+- **IntegraÃ§Ã£o com sistemas de pagamento:** Planejada para implementaÃ§Ã£o em etapas futuras.
 
 ---
 
 ## **Tecnologias Utilizadas**
 
-O projeto empregará tecnologias modernas e ferramentas de design para garantir eficiência e escalabilidade:
+O projeto empregarÃ¡ tecnologias modernas e ferramentas de design para garantir eficiÃªncia e escalabilidade:
 
-- **Planejamento:** MATLAB System Composer (estruturação e organização inicial)
+- **Planejamento:** MATLAB System Composer (estruturaÃ§Ã£o e organizaÃ§Ã£o inicial)
 - **Desenvolvimento Web:**
   - **Front-End:** HTML, CSS, JavaScript, Vue.js
   - **Back-End:** Node.js (JavaScript)
-  - **Banco de Dados:** MySQL
-- **Design e Layout:** Figma (prototipagem visual das páginas)
+  - **Banco de Dados:** Supabase
+- **Design e Layout:** Figma (prototipagem visual das pÃ¡ginas)
 
 ---
 
 ## **Etapas do Desenvolvimento**
 
-O desenvolvimento será realizado de forma incremental, seguindo as etapas abaixo:
+O desenvolvimento serÃ¡ realizado de forma incremental, seguindo as etapas abaixo:
 
-1. **Planejamento e Estruturação do Sistema**
-   - Criação de diagramas para representar a arquitetura e o comportamento do sistema.
-   - Definição das funcionalidades essenciais e fluxos de dados.
+1. **Planejamento e EstruturaÃ§Ã£o do Sistema**
+   - CriaÃ§Ã£o de diagramas para representar a arquitetura e o comportamento do sistema.
+   - DefiniÃ§Ã£o das funcionalidades essenciais e fluxos de dados.
 
 2. **Prototipagem**
-   - Construção de um protótipo navegável para validar o fluxo de navegação e funcionalidade.
+   - ConstruÃ§Ã£o de um protÃ³tipo navegÃ¡vel para validar o fluxo de navegaÃ§Ã£o e funcionalidade.
 
 3. **Design e Layout**
    - Desenvolvimento do layout visual no Figma, incluindo identidade visual e design responsivo.
 
-4. **Implementação**
-   - Desenvolvimento das páginas básicas: Home, Reservas, Quem Somos e Cadastro.
-   - Conexão com banco de dados para gerenciamento de reservas e usuários.
-   - Implementação de autenticação e controle de sessão.
+4. **ImplementaÃ§Ã£o**
+   - Desenvolvimento das pÃ¡ginas bÃ¡sicas: Home, Reservas, Quem Somos e Cadastro.
+   - ConexÃ£o com banco de dados para gerenciamento de reservas e usuÃ¡rios.
+   - ImplementaÃ§Ã£o de autenticaÃ§Ã£o e controle de sessÃ£o.
 
-5. **Testes e Integração**
-   - Realização de testes unitários e de integração para validar o sistema.
-   - Planejamento da integração com sistemas de pagamento.
+5. **Testes e IntegraÃ§Ã£o**
+   - RealizaÃ§Ã£o de testes unitÃ¡rios e de integraÃ§Ã£o para validar o sistema.
+   - Planejamento da integraÃ§Ã£o com sistemas de pagamento.
 
 ---
 
 ## **Status do Projeto**
 
-Atualmente, o projeto está em andamento. Abaixo, o status das principais etapas:
+Atualmente, o projeto estÃ¡ em andamento. Abaixo, o status das principais etapas:
 
-- [x] Estruturação inicial do sistema.
-- [x] Definição das funcionalidades e fluxos principais.
-- [ ] Protótipo navegável.
+- [x] EstruturaÃ§Ã£o inicial do sistema.
+- [x] DefiniÃ§Ã£o das funcionalidades e fluxos principais.
+- [x] ProtÃ³tipo navegÃ¡vel.
 - [ ] Design de layout no   Figma.
-- [ ] Desenvolvimento das páginas e conexão ao banco de dados.
+- [x] Desenvolvimento das pÃ¡ginas e conexÃ£o ao banco de dados.
 - [ ] Testes e ajustes finais.
 
 ---
 
 ## **Objetivos**
 
-- **Acadêmico:** Demonstrar a aplicação de práticas modernas de desenvolvimento full stack, alinhadas com uma abordagem organizada e estruturada.
-- **Funcional:** Entregar um site intuitivo, funcional e escalável, que atenda às necessidades de um hotel.
+- **AcadÃªmico:** Demonstrar a aplicaÃ§Ã£o de prÃ¡ticas modernas de desenvolvimento full stack, alinhadas com uma abordagem organizada e estruturada.
+- **Funcional:** Entregar um site intuitivo, funcional e escalÃ¡vel, que atenda Ã s necessidades de um hotel.
 
 ---
 
-## **Contribuições**
+## **ContribuiÃ§Ãµes**
 
-Contribuições para melhorias são bem-vindas. Caso tenha sugestões ou correções, envie uma issue ou um pull request.
+ContribuiÃ§Ãµes para melhorias sÃ£o bem-vindas. Caso tenha sugestÃµes ou correÃ§Ãµes, envie uma issue ou um pull request.
 
 ---
 
@@ -87,4 +87,4 @@ Contribuições para melhorias são bem-vindas. Caso tenha sugestões ou correções, 
 
 - **Autor:** Douglas Oliveira  
 - **E-mail:** douoliver@gmail.com  
-- **Curso:** Pós-Graduação em Desenvolvimento Full Stack - PUC-RS
+- **Curso:** PÃ³s-GraduaÃ§Ã£o em Desenvolvimento Full Stack - PUC-RS
