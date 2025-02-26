@@ -1,7 +1,7 @@
 ﻿# Fase 1: Construção do Vue.js
 FROM node:20-alpine AS build
 
-WORKDIR /app  # Diretório correto
+WORKDIR /app  # Diretório de trabalho
 
 # Copiar arquivos essenciais para o build
 COPY package.json package-lock.json ./
@@ -9,10 +9,13 @@ COPY package.json package-lock.json ./
 # Instalar dependências sem rodar scripts desnecessários
 RUN npm install --frozen-lockfile --ignore-scripts
 
-# Copiar todo o código do projeto
-COPY . .
+# 🔹 Adicionando debug para garantir que os arquivos foram copiados
+RUN ls -l /app
 
-# 🔹 ADICIONA DEBUG: Listar arquivos antes do build
+# Copiar todo o código para dentro do container
+COPY . /app
+
+# 🔹 Adicionando debug para verificar se os arquivos foram copiados corretamente
 RUN ls -l /app
 
 # Rodar o build do Vue.js
@@ -26,13 +29,10 @@ WORKDIR /app
 # Instalar um servidor estático para servir o Vue.js
 RUN npm install -g serve
 
-# 🔹 ADICIONA DEBUG: Listar arquivos antes de copiar o build
-RUN ls -l /app
-
 # Copiar apenas os arquivos de build gerados
 COPY --from=build /app/dist /app/dist
 
-# 🔹 ADICIONA DEBUG: Verificar se a pasta `dist/` foi copiada corretamente
+# 🔹 Debug final: Verificar se a pasta `dist/` está correta
 RUN ls -l /app/dist
 
 # Expor a porta usada pelo Railway
