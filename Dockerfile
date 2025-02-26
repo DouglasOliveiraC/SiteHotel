@@ -1,13 +1,15 @@
 # Fase 1: Construção do Vue.js
 FROM node:20-alpine AS build
 
-WORKDIR /app  # Cria um diretório de trabalho temporário
+WORKDIR /app  # Define o diretório de trabalho corretamente
 
-# Copiar arquivos de configuração e instalar dependências
-COPY package*.json ./
-RUN npm install
+# Copiar arquivos essenciais para o build
+COPY package.json package-lock.json ./
 
-# Copiar todo o código para dentro do container
+# Instalar dependências sem rodar scripts desnecessários
+RUN npm install --frozen-lockfile --ignore-scripts
+
+# Copiar todo o código do projeto
 COPY . .
 
 # Rodar o build do Vue.js
@@ -18,7 +20,7 @@ FROM node:20-alpine
 
 WORKDIR /app  # Define o diretório correto
 
-# Instalar um servidor estático para servir os arquivos Vue.js
+# Instalar um servidor estático para servir o Vue.js
 RUN npm install -g serve
 
 # Copiar apenas os arquivos de build gerados
