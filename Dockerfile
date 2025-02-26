@@ -1,20 +1,32 @@
 # Usar uma imagem base do Node.js
-FROM node:20-alpine
+FROM node:20-alpine AS build
 
 # Diretório de trabalho no container
 WORKDIR /app
 
-# Copiar apenas os arquivos de configuração inicialmente
+# Copiar arquivos de configuração e instalar dependências
 COPY package*.json ./
-
-# Instalar dependências
 RUN npm install
 
-# Copiar todo o código do projeto para o container
+# Copiar o restante do código para o container
 COPY . .
 
-# Expor a porta usada pelo Vite
-EXPOSE 5173
+# Construir o frontend Vue.js
+RUN npm run build
 
-# Comando padrão para iniciar o servidor de desenvolvimento
-CMD ["npm", "run", "dev"]
+# Segunda etapa: Servir os arquivos estáticos
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Instalar um servidor estático para servir os arquivos
+RUN npm install -g serve
+
+# Copiar apenas os arquivos de build
+COPY --from=build /app/dist /app/dist
+
+# Expor a porta usada pelo servidor
+EXPOSE 3000
+
+# Comando para servir os arquivos estáticos
+CMD ["serve", "-s", "dist", "-l", "3000"]
