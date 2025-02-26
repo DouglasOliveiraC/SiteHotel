@@ -30,3 +30,4 @@ coverage
 *.tsbuildinfo
 /.env
 /github/workflows/node.js.yml
+/docker-compose.yml

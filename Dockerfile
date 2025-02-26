@@ -1,32 +1,29 @@
-# Usar uma imagem base do Node.js
+# Fase 1: Construção do projeto Vue.js
 FROM node:20-alpine AS build
 
-# Diretório de trabalho no container
 WORKDIR /app
 
-# Copiar arquivos de configuração e instalar dependências
+# Copiar e instalar dependências
 COPY package*.json ./
 RUN npm install
 
-# Copiar o restante do código para o container
+# Copiar código-fonte e gerar build
 COPY . .
-
-# Construir o frontend Vue.js
 RUN npm run build
 
-# Segunda etapa: Servir os arquivos estáticos
+# Fase 2: Servir os arquivos estáticos
 FROM node:20-alpine
 
 WORKDIR /app
 
-# Instalar um servidor estático para servir os arquivos
+# Instalar servidor estático para servir os arquivos Vue.js
 RUN npm install -g serve
 
-# Copiar apenas os arquivos de build
+# Copiar apenas os arquivos da build
 COPY --from=build /app/dist /app/dist
 
-# Expor a porta usada pelo servidor
+# Expor a porta usada pelo Railway
 EXPOSE 3000
 
-# Comando para servir os arquivos estáticos
+# Comando para servir os arquivos Vue.js
 CMD ["serve", "-s", "dist", "-l", "3000"]
