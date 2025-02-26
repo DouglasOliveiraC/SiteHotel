@@ -7,16 +7,18 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependências locais
 node_modules
 .DS_Store
 dist-ssr
 coverage
 *.local
 
-/cypress/videos/
-/cypress/screenshots/
+# Cypress (se usado para testes e2e)
+cypress/videos/
+cypress/screenshots/
 
-# Editor directories and files
+# Arquivos de configuração de editores
 .vscode/*
 !.vscode/extensions.json
 .idea
@@ -26,7 +28,9 @@ coverage
 *.sln
 *.sw?
 
+# Arquivos temporários do TypeScript
 *.tsbuildinfo
+
+# Arquivos sensíveis e específicos de ambiente
 /.env
-/github/workflows/node.js.yml
 /docker-compose.yml
