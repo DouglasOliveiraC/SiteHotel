@@ -33,6 +33,9 @@ jobs:
           echo "Conteúdo do .env:"
           cat .env
 
+      - name: Verificar variáveis de ambiente ativas
+        run: printenv | grep VITE_
+
       - name: Instalar Dependências
         run: npm ci
 
