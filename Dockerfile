@@ -16,7 +16,7 @@ RUN npm run build
 # Fase 2: Servir os arquivos estáticos gerados
 FROM node:20-alpine
 
-WORKDIR /hotel-site  # Alterado
+WORKDIR /hotelsite  # Alterado
 
 # Instalar um servidor estático para servir o Vue.js
 RUN npm install -g serve
