@@ -23,12 +23,15 @@ RUN ls -l /app
 # Rodar o build do Vue.js
 RUN npm run build
 
-# Fase 2: Servir os arquivos estáticos
+# Fase 2: Servir os arquivos estáticos (Corrigindo erro do package.json ausente)
 FROM node:20-alpine
 
 WORKDIR /app
 
-# Instalar servidor estático para Vue.js
+# Copiar `package.json` e `package-lock.json` para a fase final
+COPY package.json package-lock.json /app/
+
+# Instalar um servidor estático para servir o Vue.js
 RUN npm install -g serve
 
 # Copiar apenas os arquivos de build gerados
