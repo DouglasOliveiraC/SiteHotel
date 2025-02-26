@@ -1,29 +1,31 @@
-# Fase 1: Construção do projeto Vue.js
+# Fase 1: Construção do Vue.js
 FROM node:20-alpine AS build
 
 WORKDIR /app
 
-# Copiar e instalar dependências
-COPY package*.json ./
+# Copiar package.json e instalar dependências
+COPY package.json package-lock.json ./
 RUN npm install
 
-# Copiar código-fonte e gerar build
+# Copiar todo o código para dentro do container
 COPY . .
+
+# Rodar o build do Vue.js
 RUN npm run build
 
-# Fase 2: Servir os arquivos estáticos
+# Fase 2: Servir os arquivos estáticos gerados
 FROM node:20-alpine
 
-WORKDIR /app
+WORKDIR /hotel-site  # Alterado
 
-# Instalar servidor estático para servir os arquivos Vue.js
+# Instalar um servidor estático para servir o Vue.js
 RUN npm install -g serve
 
-# Copiar apenas os arquivos da build
-COPY --from=build /app/dist /app/dist
+# Copiar apenas os arquivos gerados no build
+COPY --from=build /app/dist /hotelsite/dist
 
 # Expor a porta usada pelo Railway
 EXPOSE 3000
 
-# Comando para servir os arquivos Vue.js
+# Comando correto para servir os arquivos Vue.js no Railway
 CMD ["serve", "-s", "dist", "-l", "3000"]
