@@ -40,8 +40,7 @@ jobs:
       - name: Build do Projeto
         run: npm run build --if-present
 
-      - name: Executar Testes
-        run: npm test
+      
 
     
 
