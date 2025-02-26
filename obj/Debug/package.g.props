@@ -7,6 +7,7 @@
     <PackageJsonDependenciesUnheadVue Condition="$(PackageJsonDependenciesUnheadVue) == ''">^1.11.14</PackageJsonDependenciesUnheadVue>
     <PackageJsonDependenciesDotenv Condition="$(PackageJsonDependenciesDotenv) == ''">^16.4.7</PackageJsonDependenciesDotenv>
     <PackageJsonDependenciesExpress Condition="$(PackageJsonDependenciesExpress) == ''">^4.21.2</PackageJsonDependenciesExpress>
+    <PackageJsonDependenciesNodeFetch Condition="$(PackageJsonDependenciesNodeFetch) == ''">^3.3.2</PackageJsonDependenciesNodeFetch>
     <PackageJsonDependenciesPg Condition="$(PackageJsonDependenciesPg) == ''">^8.13.1</PackageJsonDependenciesPg>
     <PackageJsonDependenciesPinia Condition="$(PackageJsonDependenciesPinia) == ''">^2.3.0</PackageJsonDependenciesPinia>
     <PackageJsonDependenciesTypescript Condition="$(PackageJsonDependenciesTypescript) == ''">^5.7.3</PackageJsonDependenciesTypescript>
