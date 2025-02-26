@@ -9,14 +9,8 @@ export default defineConfig({
             '@': fileURLToPath(new URL('./src', import.meta.url)), // Aponta para a pasta 'src'
         },
     },
-    server: {
-        proxy: {
-            // Redireciona chamadas do frontend para o backend no Railway
-            '/api': {
-                target: 'https://sitehotel-production.up.railway.app', // URL do backend no Railway
-                changeOrigin: true,
-                secure: true, // Mantém HTTPS ativo
-            },
-        },
+    build: {
+        outDir: 'dist',  // Garante que os arquivos de produção vão para a pasta correta
+        emptyOutDir: true, // Limpa a pasta antes do build
     }
 });
