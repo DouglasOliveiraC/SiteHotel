@@ -8,17 +8,15 @@ export default defineConfig({
         alias: {
             '@': fileURLToPath(new URL('./src', import.meta.url)), // Aponta para a pasta 'src'
         },
-    }, 
+    },
     server: {
-        port: 5173,
-        host: '0.0.0.0',
         proxy: {
-            // Redireciona chamadas para /api ao backend
+            // Redireciona chamadas do frontend para o backend no Railway
             '/api': {
-                target: 'http://localhost:5000', // URL do backend
+                target: 'https://sitehotel-production.up.railway.app', // URL do backend no Railway
                 changeOrigin: true,
-                secure: false,
+                secure: true, // Mantém HTTPS ativo
             },
-        }
+        },
     }
 });
