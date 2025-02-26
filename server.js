@@ -1,21 +1,23 @@
-﻿const express = require('express');
-const path = require('path');
-const dotenv = require('dotenv');
-const fetch = require('node-fetch');
+﻿import express from 'express';
+import fetch from 'node-fetch';
+import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Corrigir __dirname para ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 
 const app = express();
+app.use(express.static('dist'));
+
 const PORT = process.env.PORT || 3000;
 
-// Servir estáticos
-app.use(express.static(path.join(__dirname, 'dist')));
-
-// Rota catch-all (SPA)
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
-
 
 // Rota para escutar notificações do PayPal
 app.post('/webhook/paypal', async (req, res) => {
@@ -58,5 +60,5 @@ app.post('/webhook/paypal', async (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(` Servidor rodando na porta ${PORT}`);
+    console.log(`Servidor rodando na porta ${PORT}`);
 });
