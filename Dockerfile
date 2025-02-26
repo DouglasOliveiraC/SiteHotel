@@ -2,29 +2,34 @@
 FROM node:20-alpine AS build
 
 WORKDIR /app
+
+# Copiar arquivos essenciais e instalar dependências
 COPY package.json package-lock.json ./
 RUN npm install --frozen-lockfile --ignore-scripts
+
+# Copiar todo o código do projeto (incluindo server.js)
 COPY . .
+
+# Rodar o build do Vue.js
 RUN npm run build
 
-# Fase 2: Servir os arquivos estáticos + Servidor Express.js
+# Fase 2: Imagem final com o servidor Express
 FROM node:20-alpine
+
 WORKDIR /app
 
-# Instalar dependências para o servidor
+# Copiar package.json (para garantir que, se necessário, algum script tente acessar)
 COPY package.json package-lock.json ./
-RUN npm install --frozen-lockfile --ignore-scripts
+
+# Instalar dependências para o servidor
 RUN npm install express dotenv node-fetch
 
-# Instalar um servidor estático para o Vue.js
-RUN npm install -g serve
-
-# Copiar apenas os arquivos de build do Vue.js
-COPY --from=build /app/dist ./dist
+# Copiar o servidor e os arquivos de build
 COPY server.js ./server.js
+COPY --from=build /app/dist ./dist
 
-# Definir a porta que será usada
+# Expor a porta definida (Railway deverá usar PORT 3000)
 EXPOSE 3000
 
-# Iniciar o servidor
+# Comando para iniciar o servidor Express
 CMD ["node", "server.js"]
