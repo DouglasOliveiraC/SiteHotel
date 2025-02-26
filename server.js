@@ -1,18 +1,21 @@
-﻿import express from 'express';
-import fetch from 'node-fetch';
-import dotenv from 'dotenv';
+﻿const express = require('express');
+const path = require('path');
+const dotenv = require('dotenv');
+const fetch = require('node-fetch');
 
-// Carrega variáveis de ambiente
 dotenv.config();
 
 const app = express();
-app.use(express.static('dist'));
-
 const PORT = process.env.PORT || 3000;
 
+// Servir estáticos
+app.use(express.static(path.join(__dirname, 'dist')));
+
+// Rota catch-all (SPA)
 app.get('*', (req, res) => {
-    res.sendFile('dist/index.html', { root: '.' });
+    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
+
 
 // Rota para escutar notificações do PayPal
 app.post('/webhook/paypal', async (req, res) => {

@@ -10,13 +10,13 @@ export default defineConfig({
         },
     },
     server: {
-        host: '0.0.0.0', // Permite acesso externo no Railway
-        port: 3000, // Mantém a porta consistente com a configuração do Railway
-        strictPort: true, // Garante que o Vite não tente outras portas
+        host: '0.0.0.0',
+        port: 3000,
+        strictPort: true,
     },
     build: {
         outDir: 'dist',
         emptyOutDir: true,
     },
-    base: './', // Garante que os assets sejam referenciados corretamente
+    base: './' // Garante que os assets sejam referenciados relativamente
 });
