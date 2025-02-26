@@ -21,7 +21,6 @@
     "vite": "^6.0.5"
   },
   "name": "hotelsite",
-  "type": "module",
   "overrides": {
     "cross-spawn": "^7.0.6"
   },

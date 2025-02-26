@@ -6,9 +6,13 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const app = express();
-app.use(express.json());
+app.use(express.static('dist'));
 
 const PORT = process.env.PORT || 3000;
+
+app.get('*', (req, res) => {
+    res.sendFile('dist/index.html', { root: '.' });
+});
 
 // Rota para escutar notificações do PayPal
 app.post('/webhook/paypal', async (req, res) => {
