@@ -34,3 +34,4 @@ cypress/screenshots/
 # Arquivos sensíveis e específicos de ambiente
 /.env
 /docker-compose.yml
+/github/workflows/node.js.yml
