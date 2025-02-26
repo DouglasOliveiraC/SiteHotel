@@ -3,16 +3,36 @@
   "WorkspaceRootPath": "C:\\Users\\douol\\source\\repos\\HotelSite\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|c:\\users\\douol\\source\\repos\\hotelsite\\dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|solutionrelative:dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}"
+      "AbsoluteMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|c:\\users\\douol\\source\\repos\\hotelsite\\.env||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|solutionrelative:.env||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|c:\\users\\douol\\source\\repos\\hotelsite\\dist\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|solutionrelative:dist\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|c:\\users\\douol\\source\\repos\\hotelsite\\nuget.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
       "RelativeMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|solutionrelative:nuget.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|c:\\users\\douol\\source\\repos\\hotelsite\\.env||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|solutionrelative:.env||{8B382828-6202-11D1-8870-0000F87579D2}"
+      "AbsoluteMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|c:\\users\\douol\\source\\repos\\hotelsite\\.dockerignore.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|solutionrelative:.dockerignore.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|c:\\users\\douol\\source\\repos\\hotelsite\\tsconfig.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|solutionrelative:tsconfig.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|c:\\users\\douol\\source\\repos\\hotelsite\\vite.config.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|solutionrelative:vite.config.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|c:\\users\\douol\\source\\repos\\hotelsite\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|solutionrelative:.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|c:\\users\\douol\\source\\repos\\hotelsite\\dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|solutionrelative:dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|c:\\users\\douol\\source\\repos\\hotelsite\\src\\components\\roomdetailed.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -25,10 +45,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|c:\\users\\douol\\source\\repos\\hotelsite\\src\\views\\homeview.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|solutionrelative:src\\views\\homeview.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|c:\\users\\douol\\source\\repos\\hotelsite\\vite.config.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|solutionrelative:vite.config.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|c:\\users\\douol\\source\\repos\\hotelsite\\src\\components\\featurecard.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -50,28 +66,134 @@
       "DocumentGroups": [
         {
           "DockedWidth": 350,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 14,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Dockerfile",
-              "DocumentMoniker": "C:\\Users\\douol\\source\\repos\\HotelSite\\Dockerfile",
-              "RelativeDocumentMoniker": "Dockerfile",
-              "ToolTip": "C:\\Users\\douol\\source\\repos\\HotelSite\\Dockerfile",
-              "RelativeToolTip": "Dockerfile",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-02-26T13:19:57.965Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:129:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "tsconfig.json",
+              "DocumentMoniker": "C:\\Users\\douol\\source\\repos\\HotelSite\\tsconfig.json",
+              "RelativeDocumentMoniker": "tsconfig.json",
+              "ToolTip": "C:\\Users\\douol\\source\\repos\\HotelSite\\tsconfig.json",
+              "RelativeToolTip": "tsconfig.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-02-26T18:38:36.336Z",
+              "EditorCaption": ""
+            },
+            {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "index.html",
+              "DocumentMoniker": "C:\\Users\\douol\\source\\repos\\HotelSite\\dist\\index.html",
+              "RelativeDocumentMoniker": "dist\\index.html",
+              "ToolTip": "C:\\Users\\douol\\source\\repos\\HotelSite\\dist\\index.html",
+              "RelativeToolTip": "dist\\index.html",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2025-02-26T16:17:14.493Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": ".gitignore",
+              "DocumentMoniker": "C:\\Users\\douol\\source\\repos\\HotelSite\\.gitignore",
+              "RelativeDocumentMoniker": ".gitignore",
+              "ToolTip": "C:\\Users\\douol\\source\\repos\\HotelSite\\.gitignore",
+              "RelativeToolTip": ".gitignore",
+              "ViewState": "AgIAABUAAAAAAAAAAAAAACUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-02-26T14:48:51.756Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": ".dockerignore.txt",
+              "DocumentMoniker": "C:\\Users\\douol\\source\\repos\\HotelSite\\.dockerignore.txt",
+              "RelativeDocumentMoniker": ".dockerignore.txt",
+              "ToolTip": "C:\\Users\\douol\\source\\repos\\HotelSite\\.dockerignore.txt",
+              "RelativeToolTip": ".dockerignore.txt",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
+              "WhenOpened": "2025-02-26T14:42:34.239Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Dockerfile",
+              "DocumentMoniker": "C:\\Users\\douol\\source\\repos\\HotelSite\\Dockerfile",
+              "RelativeDocumentMoniker": "Dockerfile",
+              "ToolTip": "C:\\Users\\douol\\source\\repos\\HotelSite\\Dockerfile",
+              "RelativeToolTip": "Dockerfile",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAcwB4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-02-26T13:19:57.965Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "vite.config.js",
+              "DocumentMoniker": "C:\\Users\\douol\\source\\repos\\HotelSite\\vite.config.js",
+              "RelativeDocumentMoniker": "vite.config.js",
+              "ToolTip": "C:\\Users\\douol\\source\\repos\\HotelSite\\vite.config.js",
+              "RelativeToolTip": "vite.config.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-02-26T09:58:56.521Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": ".env",
+              "DocumentMoniker": "C:\\Users\\douol\\source\\repos\\HotelSite\\.env",
+              "RelativeDocumentMoniker": ".env",
+              "ToolTip": "C:\\Users\\douol\\source\\repos\\HotelSite\\.env",
+              "RelativeToolTip": ".env",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAADcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-02-25T00:14:29.973Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "nuget.config",
               "DocumentMoniker": "C:\\Users\\douol\\source\\repos\\HotelSite\\nuget.config",
               "RelativeDocumentMoniker": "nuget.config",
@@ -84,20 +206,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "vite.config.js",
-              "DocumentMoniker": "C:\\Users\\douol\\source\\repos\\HotelSite\\vite.config.js",
-              "RelativeDocumentMoniker": "vite.config.js",
-              "ToolTip": "C:\\Users\\douol\\source\\repos\\HotelSite\\vite.config.js",
-              "RelativeToolTip": "vite.config.js",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-02-26T09:58:56.521Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 10,
               "Title": "HomeView.vue",
               "DocumentMoniker": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\views\\HomeView.vue",
               "RelativeDocumentMoniker": "src\\views\\HomeView.vue",
@@ -109,45 +218,8 @@
               "EditorCaption": ""
             },
             {
-              "$type": "Bookmark",
-              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
-            },
-            {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": ".env",
-              "DocumentMoniker": "C:\\Users\\douol\\source\\repos\\HotelSite\\.env",
-              "RelativeDocumentMoniker": ".env",
-              "ToolTip": "C:\\Users\\douol\\source\\repos\\HotelSite\\.env",
-              "RelativeToolTip": ".env",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAADcAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-02-25T00:14:29.973Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 9,
               "Title": "HeaderLoggedIn.vue",
               "DocumentMoniker": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\components\\HeaderLoggedIn.vue",
               "RelativeDocumentMoniker": "src\\components\\HeaderLoggedIn.vue",
@@ -160,7 +232,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 12,
               "Title": "HeaderVisitor.vue",
               "DocumentMoniker": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\components\\HeaderVisitor.vue",
               "RelativeDocumentMoniker": "src\\components\\HeaderVisitor.vue",
@@ -173,7 +245,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 8,
               "Title": "RoomDetailed.vue",
               "DocumentMoniker": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\components\\RoomDetailed.vue",
               "RelativeDocumentMoniker": "src\\components\\RoomDetailed.vue",
@@ -186,7 +258,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 11,
               "Title": "FeatureCard.vue",
               "DocumentMoniker": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\components\\FeatureCard.vue",
               "RelativeDocumentMoniker": "src\\components\\FeatureCard.vue",
@@ -199,7 +271,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 13,
               "Title": "RoomCard.vue",
               "DocumentMoniker": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\components\\RoomCard.vue",
               "RelativeDocumentMoniker": "src\\components\\RoomCard.vue",
