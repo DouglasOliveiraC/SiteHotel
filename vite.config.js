@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite';
+ï»¿import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { fileURLToPath, URL } from 'node:url';
 
@@ -11,12 +11,12 @@ export default defineConfig({
     },
     server: {
         host: '0.0.0.0', // Permite acesso externo no Railway
-        port: 3000, // Mantém a porta consistente com a configuração do Docker e Railway
-        strictPort: true, // Garante que o Vite não tente outras portas
-        base: '/',
+        port: process.env.PORT || 5173, // Usa a porta 5173 localmente e 3000 no Railway
+        strictPort: true, // Garante que o Vite nÃ£o tente outras portas
     },
     build: {
-        outDir: 'dist', // Garante que os arquivos de produção vão para a pasta correta
+        outDir: 'dist', // Garante que os arquivos de produÃ§Ã£o vÃ£o para a pasta correta
         emptyOutDir: true, // Limpa a pasta antes do build
-    }
+    },
+    base: './', // ðŸ”¹ Movido para o escopo principal (corrigido)
 });
