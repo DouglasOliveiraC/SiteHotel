@@ -13,6 +13,7 @@ export default defineConfig({
         host: '0.0.0.0', // Permite acesso externo no Railway
         port: 3000, // Mantém a porta consistente com a configuração do Docker e Railway
         strictPort: true, // Garante que o Vite não tente outras portas
+        base: '/',
     },
     build: {
         outDir: 'dist', // Garante que os arquivos de produção vão para a pasta correta
