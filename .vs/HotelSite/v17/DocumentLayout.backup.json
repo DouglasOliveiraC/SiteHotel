@@ -3,16 +3,32 @@
   "WorkspaceRootPath": "C:\\Users\\douol\\source\\repos\\HotelSite\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|c:\\users\\douol\\source\\repos\\hotelsite\\src\\views\\profile.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|solutionrelative:src\\views\\profile.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|c:\\users\\douol\\source\\repos\\hotelsite\\src\\components\\roomcard.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|solutionrelative:src\\components\\roomcard.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|c:\\users\\douol\\source\\repos\\hotelsite\\src\\views\\reservations.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|solutionrelative:src\\views\\reservations.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|c:\\users\\douol\\source\\repos\\hotelsite\\src\\router\\index.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|solutionrelative:src\\router\\index.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|c:\\users\\douol\\source\\repos\\hotelsite\\src\\components\\headerloggedin.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|solutionrelative:src\\components\\headerloggedin.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|c:\\users\\douol\\source\\repos\\hotelsite\\src\\components\\photogallery.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|solutionrelative:src\\components\\photogallery.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|c:\\users\\douol\\source\\repos\\hotelsite\\src\\components\\googlemap.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|solutionrelative:src\\components\\googlemap.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|c:\\users\\douol\\source\\repos\\hotelsite\\src\\views\\homeview.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|solutionrelative:src\\views\\homeview.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|c:\\users\\douol\\source\\repos\\hotelsite\\src\\components\\loginpopup.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|solutionrelative:src\\components\\loginpopup.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{66A3B71F-43A4-4F42-BAE9-4D635669AE60}|hotelsite.esproj|c:\\users\\douol\\source\\repos\\hotelsite\\src\\stores\\auth.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
@@ -26,22 +42,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 350,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 5,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "auth.ts",
-              "DocumentMoniker": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\stores\\auth.ts",
-              "RelativeDocumentMoniker": "src\\stores\\auth.ts",
-              "ToolTip": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\stores\\auth.ts",
-              "RelativeToolTip": "src\\stores\\auth.ts",
-              "ViewState": "AgIAAAgBAAAAAAAAAAAAABEBAAAZAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2025-02-01T16:44:30.707Z",
-              "IsPinned": true,
-              "EditorCaption": ""
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
@@ -64,42 +66,100 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "HeaderLoggedIn.vue",
-              "DocumentMoniker": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\components\\HeaderLoggedIn.vue",
-              "RelativeDocumentMoniker": "src\\components\\HeaderLoggedIn.vue",
-              "ToolTip": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\components\\HeaderLoggedIn.vue",
-              "RelativeToolTip": "src\\components\\HeaderLoggedIn.vue",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "RoomCard.vue",
+              "DocumentMoniker": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\components\\RoomCard.vue",
+              "RelativeDocumentMoniker": "src\\components\\RoomCard.vue",
+              "ToolTip": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\components\\RoomCard.vue",
+              "RelativeToolTip": "src\\components\\RoomCard.vue",
+              "ViewState": "AgIAACAAAAAAAAAAAAAswCoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
-              "WhenOpened": "2025-02-11T14:25:06.11Z",
+              "WhenOpened": "2025-02-14T22:21:52.96Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "index.js",
               "DocumentMoniker": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\router\\index.js",
               "RelativeDocumentMoniker": "src\\router\\index.js",
               "ToolTip": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\router\\index.js",
               "RelativeToolTip": "src\\router\\index.js",
-              "ViewState": "AgIAACoAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAB0AAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-02-06T18:07:08.226Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-13T22:15:28.511Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Profile.vue",
-              "DocumentMoniker": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\views\\Profile.vue",
-              "RelativeDocumentMoniker": "src\\views\\Profile.vue",
-              "ToolTip": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\views\\Profile.vue",
-              "RelativeToolTip": "src\\views\\Profile.vue",
-              "ViewState": "AgIAAEUAAAAAAAAAAAAAAEwAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "Reservations.vue",
+              "DocumentMoniker": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\views\\Reservations.vue",
+              "RelativeDocumentMoniker": "src\\views\\Reservations.vue",
+              "ToolTip": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\views\\Reservations.vue",
+              "RelativeToolTip": "src\\views\\Reservations.vue",
+              "ViewState": "AgIAAAABAAAAAAAAAAAswB0BAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
-              "WhenOpened": "2025-02-06T16:24:22.145Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-13T22:13:13.229Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "HomeView.vue",
+              "DocumentMoniker": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\views\\HomeView.vue",
+              "RelativeDocumentMoniker": "src\\views\\HomeView.vue",
+              "ToolTip": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\views\\HomeView.vue",
+              "RelativeToolTip": "src\\views\\HomeView.vue",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
+              "WhenOpened": "2025-02-13T21:31:59.739Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "auth.ts",
+              "DocumentMoniker": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\stores\\auth.ts",
+              "RelativeDocumentMoniker": "src\\stores\\auth.ts",
+              "ToolTip": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\stores\\auth.ts",
+              "RelativeToolTip": "src\\stores\\auth.ts",
+              "ViewState": "AgIAAAUBAAAAAAAAAAAAABcBAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-02-01T16:44:30.707Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "PhotoGallery.vue",
+              "DocumentMoniker": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\components\\PhotoGallery.vue",
+              "RelativeDocumentMoniker": "src\\components\\PhotoGallery.vue",
+              "ToolTip": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\components\\PhotoGallery.vue",
+              "RelativeToolTip": "src\\components\\PhotoGallery.vue",
+              "ViewState": "AgIAABUAAAAAAAAAAAAAACAAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
+              "WhenOpened": "2025-02-13T19:14:39.778Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "GoogleMap.vue",
+              "DocumentMoniker": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\components\\GoogleMap.vue",
+              "RelativeDocumentMoniker": "src\\components\\GoogleMap.vue",
+              "ToolTip": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\components\\GoogleMap.vue",
+              "RelativeToolTip": "src\\components\\GoogleMap.vue",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAABUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
+              "WhenOpened": "2025-02-13T19:13:38.013Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "LoginPopup.vue",
+              "DocumentMoniker": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\components\\LoginPopup.vue",
+              "RelativeDocumentMoniker": "src\\components\\LoginPopup.vue",
+              "ToolTip": "C:\\Users\\douol\\source\\repos\\HotelSite\\src\\components\\LoginPopup.vue",
+              "RelativeToolTip": "src\\components\\LoginPopup.vue",
+              "ViewState": "AgIAAE8AAAAAAAAAAAAswK4AAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
+              "WhenOpened": "2025-02-13T18:44:45.218Z"
             }
           ]
         },

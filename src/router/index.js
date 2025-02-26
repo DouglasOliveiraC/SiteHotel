@@ -9,6 +9,7 @@ import ContactView from '@/views/ContactView.vue';
 import AuthCallback from '@/views/AuthCallback.vue';
 import { useAuthStore } from '@/stores/auth';
 import Profile from '@/views/Profile.vue';
+import Reservations from '@/views/Reservations.vue';
 
 
 
@@ -20,9 +21,10 @@ const routes = [
     { path: '/terms-of-use', name: 'TermsOfUse', component: TermsOfUse },
     { path: '/privacy', name: 'PrivacyPolicy', component: PrivacyPolicy },
     { path: '/contact', name: 'ContactView', component: ContactView },
+    { path: '/reservations', component: Reservations },
+    { path: '/room/:id', name: 'RoomDetailed',component: () => import('@/components/RoomDetailed.vue')},
     
     { path: '/auth/callback', name: 'AuthCallback', component: AuthCallback },
-    //{ path: '/reservations', name: 'ReservationsView', component: () => import('@/views/Reservations.vue') },
 
     {
         path: '/profile',

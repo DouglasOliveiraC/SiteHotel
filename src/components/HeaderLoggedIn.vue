@@ -1,26 +1,20 @@
-<!--
-  HeaderLoggedIn.vue
-
-  Componente responsável por exibir o cabeçalho para usuários autenticados.
-  Mostra o nome (ou email) do usuário, links específicos (Reservas, Perfil) e
-  um botão de logout para encerrar a sessão.
--->
-<script setup>
+<script setup lang="ts">
     import { computed } from 'vue';
     import { useAuthStore } from '@/stores/auth';
 
+    /**
+     * HeaderLoggedIn.vue
+     * Descrição: Exibe o cabeçalho para usuários autenticados, mostrando uma mensagem
+     * de boas-vindas e links de navegação (Início, Reservas, Perfil), além do botão de logout.
+     */
     const authStore = useAuthStore();
 
-    /**
-     * userName: Computed reativo que lê direto do estado global (authStore.user).
-     */
+    // Computa o nome do usuário a partir do estado global (authStore.user)
     const userName = computed(() => {
         return authStore.user?.email ?? 'Usuário Anônimo';
     });
 
-    /**
-     * Função de logout
-     */
+    // Função de logout
     const logout = async () => {
         await authStore.logout();
     };
@@ -30,19 +24,12 @@
     <header>
         <nav>
             <ul class="menu">
-                <!-- Exibe uma saudação com o nome (ou email) do usuário -->
-                <li>Bem-vindo, {{ userName }}!</li>
-
-                <!-- Links de navegação para usuários logados -->
+                <li class="welcome-text">Bem-vindo, {{ userName }}!</li>
                 <li><router-link to="/">Início</router-link></li>
                 <li><router-link to="/reservations">Reservas</router-link></li>
                 <li><router-link to="/profile">Perfil</router-link></li>
-
-                <!-- Botão para encerrar sessão e retornar ao estado de visitante -->
                 <li>
-                    <button @click="logout">
-                        Sair
-                    </button>
+                    <button @click="logout" class="logout-btn">Sair</button>
                 </li>
             </ul>
         </nav>
@@ -50,33 +37,73 @@
 </template>
 
 <style scoped>
-    /* Estilos do cabeçalho para usuários autenticados */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
+    /* -----------------------------------------------------------------------------
+       Estilização do Cabeçalho para Usuários Autenticados
+    ----------------------------------------------------------------------------- */
     header {
-        background-color: #222;
-        color: white;
-        padding: 1rem;
+        background: rgba(0, 128, 96, 0.8);
+        backdrop-filter: blur(10px);
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
+    /* Estilização da navegação */
     .menu {
         display: flex;
         list-style: none;
         gap: 2rem;
+        align-items: center;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 400;
     }
 
-    /* Links e botões compartilhados */
-    a,
-    button {
-        color: white;
+    /* Texto de boas-vindas */
+    .welcome-text {
+        font-weight: 600;
+        color: #fff;
+        font-size: 1.1rem;
+    }
+
+    /* Links de navegação */
+    a {
+        color: #fff;
         text-decoration: none;
-        background: none;
-        border: none;
-        font-weight: bold;
-        cursor: pointer;
+        font-size: 1rem;
+        transition: color 0.3s;
     }
 
-        a:hover,
-        button:hover {
-            text-decoration: underline;
+        a:hover {
+            color: #cce3de;
         }
+
+    /* Botão de logout */
+    .logout-btn {
+        background: #d9534f;
+        color: white;
+        border: none;
+        padding: 0.6rem 1.2rem;
+        font-size: 1rem;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s;
+        font-weight: 600;
+    }
+
+        .logout-btn:hover {
+            background: #c9302c;
+        }
+
+    /* Responsividade: disposição vertical para telas menores */
+    @media (max-width: 768px) {
+        .menu {
+            flex-direction: column;
+            gap: 1rem;
+            text-align: center;
+        }
+    }
 </style>

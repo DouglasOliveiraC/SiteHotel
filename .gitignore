@@ -28,3 +28,5 @@ coverage
 *.sw?
 
 *.tsbuildinfo
+/.env
+/github/workflows/node.js.yml

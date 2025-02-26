@@ -1,11 +1,20 @@
 ﻿<script setup lang="ts">
+    /* -----------------------------------------------------------------------------
+       Componente: LoginPopup
+       Descrição: Exibe um modal de autenticação que permite ao usuário realizar login,
+                  registro ou autenticar via Google. O design adota a paleta de cores e
+                  tipografia consistentes com o restante do projeto.
+    -----------------------------------------------------------------------------*/
     import { ref } from 'vue';
     import { supabase } from '@/utils/supabase-client';
     import { useAuthStore } from '@/stores/auth';
 
+    // Acesso à store de autenticação global
     const authStore = useAuthStore();
 
-    // PROPRIEDADES E EVENTOS
+    /* -----------------------------------------------------------------------------
+       PROPRIEDADES DO COMPONENTE
+    -----------------------------------------------------------------------------*/
     const props = defineProps({
         show: {
             type: Boolean,
@@ -14,7 +23,9 @@
     });
     const emits = defineEmits(['close']);
 
-    // ESTADOS DO FORMULÁRIO
+    /* -----------------------------------------------------------------------------
+       ESTADOS DO FORMULÁRIO
+    -----------------------------------------------------------------------------*/
     const isRegistering = ref(false);
     const name = ref('');
     const surname = ref('');
@@ -24,7 +35,10 @@
     const errorMessage = ref('');
     const loading = ref(false);
 
-    // FUNÇÃO PARA FECHAR O POPUP E LIMPAR OS CAMPOS
+    /* -----------------------------------------------------------------------------
+       FUNÇÃO: closePopup
+       Descrição: Fecha o modal e reseta os campos e estados do formulário.
+    -----------------------------------------------------------------------------*/
     function closePopup() {
         emits('close');
         isRegistering.value = false;
@@ -37,12 +51,19 @@
         loading.value = false;
     }
 
-    // ALTERNAR ENTRE LOGIN E REGISTRO
+    /* -----------------------------------------------------------------------------
+       FUNÇÃO: toggleRegister
+       Descrição: Alterna entre os modos de login e registro.
+    -----------------------------------------------------------------------------*/
     function toggleRegister() {
         isRegistering.value = !isRegistering.value;
     }
 
-    // DECIDE QUAL FUNÇÃO CHAMAR NO SUBMIT
+    /* -----------------------------------------------------------------------------
+       FUNÇÃO: handleSubmit
+       Descrição: Determina se o formulário deve executar o login ou o registro,
+                  com base no estado atual.
+    -----------------------------------------------------------------------------*/
     function handleSubmit() {
         if (isRegistering.value) {
             handleRegister();
@@ -51,8 +72,10 @@
         }
     }
 
-    
-    // FUNÇÃO DE LOGIN (email/senha)
+    /* -----------------------------------------------------------------------------
+       FUNÇÃO: handleLogin
+       Descrição: Realiza o login do usuário utilizando email e senha.
+    -----------------------------------------------------------------------------*/
     async function handleLogin() {
         if (!email.value || !password.value) {
             errorMessage.value = 'Preencha todos os campos.';
@@ -80,7 +103,6 @@
                 localStorage.setItem('supabase_session', JSON.stringify(data.session));
             }
 
-        
             alert('Login realizado com sucesso!');
             closePopup();
         } catch (err: any) {
@@ -90,12 +112,10 @@
         }
     }
 
-
-
-
-
-
-    // FUNÇÃO DE REGISTRO
+    /* -----------------------------------------------------------------------------
+       FUNÇÃO: handleRegister
+       Descrição: Registra um novo usuário utilizando os dados fornecidos.
+    -----------------------------------------------------------------------------*/
     async function handleRegister() {
         if (!name.value || !surname.value || !email.value || !password.value || !cpf.value) {
             errorMessage.value = 'Preencha todos os campos.';
@@ -136,7 +156,10 @@
         }
     }
 
-    // FUNÇÃO DE LOGIN COM GOOGLE
+    /* -----------------------------------------------------------------------------
+       FUNÇÃO: handleGoogleLogin
+       Descrição: Realiza o login do usuário utilizando autenticação via Google.
+    -----------------------------------------------------------------------------*/
     async function handleGoogleLogin() {
         errorMessage.value = '';
         loading.value = true;
@@ -158,18 +181,19 @@
 </script>
 
 <template>
+    <!-- Modal: Exibe a tela de login/registro somente se "show" for verdadeiro -->
     <div v-if="show" class="modal-overlay">
         <div class="modal-container">
-            <!-- Cabeçalho do modal -->
+            <!-- Cabeçalho do Modal -->
             <div class="modal-header">
                 <h2>{{ isRegistering ? 'Registrar' : 'Login' }}</h2>
                 <button class="close-btn" @click="closePopup">X</button>
             </div>
 
-            <!-- Corpo do modal: formulário -->
+            <!-- Corpo do Modal: Formulário de autenticação -->
             <div class="modal-body">
                 <form @submit.prevent="handleSubmit">
-                    <!-- Campos somente no modo de registro -->
+                    <!-- Campos adicionais para o modo de registro -->
                     <div v-if="isRegistering" class="form-group">
                         <label for="name">Nome</label>
                         <input id="name" type="text" v-model="name" required />
@@ -182,7 +206,7 @@
                         <label for="cpf">CPF</label>
                         <input id="cpf" type="text" v-model="cpf" required />
                     </div>
-                    <!-- Campos comuns -->
+                    <!-- Campos comuns para login e registro -->
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input id="email" type="email" v-model="email" required />
@@ -192,15 +216,16 @@
                         <input id="password" type="password" v-model="password" required />
                     </div>
 
+                    <!-- Exibição de mensagens de erro -->
                     <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
 
-                    <!-- Ajuste: convertemos o "loading" em boolean -->
+                    <!-- Botão principal de ação: Login ou Registro -->
                     <button class="btn-submit" type="submit" :disabled="Boolean(loading)">
                         {{ loading ? 'Carregando...' : isRegistering ? 'Registrar' : 'Entrar' }}
                     </button>
                 </form>
 
-                <!-- Botão de login com Google (somente no modo login) -->
+                <!-- Opção de autenticação via Google (apenas no modo login) -->
                 <div class="divider" v-if="!isRegistering">ou</div>
                 <button v-if="!isRegistering"
                         class="btn-google"
@@ -209,7 +234,7 @@
                     {{ loading ? 'Carregando...' : 'Entrar com Google' }}
                 </button>
 
-                <!-- Alternar entre modos -->
+                <!-- Botão para alternar entre os modos de login e registro -->
                 <div class="divider"></div>
                 <button class="btn-switch" @click="toggleRegister" :disabled="Boolean(loading)">
                     {{ isRegistering ? 'Já tem uma conta? Entrar' : 'Não tem uma conta? Registrar' }}
@@ -220,98 +245,147 @@
 </template>
 
 <style scoped>
-    .modal-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 999;
-    }
+        /* -----------------------------------------------------------------------------
+       Importação da fonte 'Poppins' para manter a consistência tipográfica
+    -----------------------------------------------------------------------------*/
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
-    .modal-container {
-        background: #fff;
-        width: 90%;
-        max-width: 400px;
-        border-radius: 8px;
-        padding: 1.5rem;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-        position: relative;
-        display: flex;
-        flex-direction: column;
-    }
+        /* -----------------------------------------------------------------------------
+       Estilização do Modal de Autenticação
+    -----------------------------------------------------------------------------*/
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Fundo escurecido */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000; /* Aumentado para ficar acima do header */
+        }
 
-    .modal-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1rem;
-    }
+        .modal-container {
+            background: #fff;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            font-family: 'Poppins', sans-serif;
+        }
 
-    .close-btn {
-        background: transparent;
-        border: none;
-        font-size: 1.2rem;
-        cursor: pointer;
-    }
+        /* -----------------------------------------------------------------------------
+       Cabeçalho do Modal
+    -----------------------------------------------------------------------------*/
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
 
-    .modal-body {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-    }
+        .close-btn {
+            background: transparent;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
 
-    .form-group {
-        display: flex;
-        flex-direction: column;
-    }
+        /* -----------------------------------------------------------------------------
+       Corpo do Modal e Formulário
+    -----------------------------------------------------------------------------*/
+        .modal-body {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
 
-    .error-message {
-        color: red;
-        font-size: 0.9rem;
-    }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
 
+        /* Estilização dos inputs para uma aparência moderna */
+        .modal-body input {
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 0.5rem;
+            font-size: 1rem;
+            margin-top: 0.2rem;
+            transition: border-color 0.3s;
+        }
+
+            .modal-body input:focus {
+                outline: none;
+                border-color: rgba(0, 128, 96, 0.8);
+            }
+
+        .error-message {
+            color: red;
+            font-size: 0.9rem;
+        }
+
+        /* -----------------------------------------------------------------------------
+       Botões: Estilização consistente com a paleta e design moderno
+    -----------------------------------------------------------------------------*/
+        .btn-submit,
+        .btn-google,
+        .btn-switch {
+            width: 100%;
+            padding: 0.8rem 1.5rem;
+            font-weight: 600;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s ease, color 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Botão principal (Login/Registro): Verde translúcido */
     .btn-submit {
-        margin-top: 0.5rem;
-        background-color: #007bff;
+        margin-top: 1rem;
+        background-color: rgba(0, 128, 96, 0.8);
         color: #fff;
-        width: 100%;
-        padding: 0.6rem 1rem;
-        font-weight: bold;
-        border-radius: 4px;
-        border: none;
-        cursor: pointer;
     }
 
-    .btn-google {
-        background-color: #ea4335;
-        color: #fff;
-        width: 100%;
-        padding: 0.6rem 1rem;
-        font-weight: bold;
-        border-radius: 4px;
-        border: none;
-        cursor: pointer;
-    }
+        .btn-submit:hover:not(:disabled) {
+                background-color: rgba(0, 128, 96, 1); /* Verde mais intenso no hover */
+                border: 1px solid rgba(0, 128, 96, 1);
+                color: #fff;
+        }
 
-    .divider {
-        text-align: center;
-        color: #999;
-        font-size: 0.85rem;
-    }
+        /* Botão de login com Google: Tom vermelho */
+        .btn-google {
+            background-color: #ea4335;
+            color: #fff;
+        }
 
-    .btn-switch {
-        background-color: #6c757d;
-        color: #fff;
-        width: 100%;
-        padding: 0.6rem 1rem;
-        font-weight: bold;
-        border-radius: 4px;
-        border: none;
-        cursor: pointer;
-    }
+            .btn-google:hover:not(:disabled) {
+                background-color: #c93329;
+            }
+
+        /* Botão para alternar entre modos: Cinza neutro */
+        .btn-switch {
+            background-color: #6c757d;
+            color: #fff;
+        }
+
+            .btn-switch:hover:not(:disabled) {
+                background-color: #5a6268;
+            }
+
+        /* -----------------------------------------------------------------------------
+       Divisores e Separadores
+    -----------------------------------------------------------------------------*/
+        .divider {
+            text-align: center;
+            color: #999;
+            font-size: 0.85rem;
+        }
 </style>
