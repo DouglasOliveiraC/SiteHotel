@@ -3,7 +3,7 @@ FROM node:20-alpine AS build
 
 WORKDIR /app
 
-# Criar a pasta manualmente para evitar problemas
+# Criar a pasta manualmente
 RUN mkdir -p /app
 
 # Copiar arquivos essenciais
@@ -17,28 +17,25 @@ RUN npm install --frozen-lockfile --ignore-scripts
 # Copiar todo o código do projeto
 COPY . /app
 
-# Debug: Listar arquivos antes do build
-RUN ls -l /app
-
 # Rodar o build do Vue.js
 RUN npm run build
 
-# Fase 2: Servir os arquivos estáticos (Corrigindo erro do package.json ausente)
+# Debug: Verificar se os arquivos de build foram gerados corretamente
+RUN ls -l /app/dist || echo "Erro: dist/ não foi gerado!"
+
+# Fase 2: Servir os arquivos estáticos
 FROM node:20-alpine
 
 WORKDIR /app
 
-# Copiar `package.json` e `package-lock.json` para a fase final
-COPY package.json package-lock.json /app/
-
-# Instalar um servidor estático para servir o Vue.js
-RUN npm install -g serve
-
 # Copiar apenas os arquivos de build gerados
 COPY --from=build /app/dist /app/dist
 
-# Debug: Verificar se dist/ foi copiada corretamente
-RUN ls -l /app/dist
+# Instalar servidor estático
+RUN npm install -g serve
+
+# Debug: Listar arquivos na pasta /app e /app/dist antes de rodar o servidor
+RUN ls -l /app && ls -l /app/dist || echo "Pasta /app/dist não encontrada!"
 
 EXPOSE 3000
 
