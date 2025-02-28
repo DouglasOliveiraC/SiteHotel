@@ -107,7 +107,7 @@
 
     /**
      * Computa a imagem principal do quarto com base no tipo.
-     * As imagens devem estar na pasta "public/images/RoomImages/" e nomeadas como "premium.jpg", "luxo.jpg", "standard.jpg", etc.
+     * As imagens devem estar na pasta "/images/RoomImages/" e nomeadas como "premium.jpg", "luxo.jpg", "standard.jpg", etc.
      */
     const mainImage = computed(() => {
         if (!room.value.type) return '/images/RoomImages/default.jpg';

@@ -40,10 +40,10 @@
     const imageSrc = computed(() => {
         if (props.room.thumbnail) return props.room.thumbnail;
         const type = props.room.type.toLowerCase();
-        if (type === 'premium') return 'public/images/RoomImages/premium.jpg';
-        if (type === 'luxo') return 'public/images/RoomImages/luxo.jpg';
-        if (type === 'standard') return 'public/images/RoomImages/standard.jpg';
-        return 'public/images/RoomImages/default.jpg';
+        if (type === 'premium') return '/images/RoomImages/premium.jpg';
+        if (type === 'luxo') return '/images/RoomImages/luxo.jpg';
+        if (type === 'standard') return '/images/RoomImages/standard.jpg';
+        return '/images/RoomImages/default.jpg';
     });
 
     /**
