@@ -159,7 +159,7 @@ export const useAuthStore = defineStore('auth', {
                 const apiKey = import.meta.env.VITE_SUPABASE_KEY;
 
                 const response = await fetch(
-                    `https://itzogmezyvdtuhnitibj.supabase.co/rest/v1/profiles?id=eq.${userId}`,
+                    `${import.meta.env.VITE_SUPABASE_URL}/rest/v1/profiles?id=eq.${userId}`,
                     {
                         method: "GET",
                         headers: {
@@ -221,7 +221,7 @@ export const useAuthStore = defineStore('auth', {
                     const apiKey = import.meta.env.VITE_SUPABASE_KEY;
 
                     // Realiza a requisição de logout via fetch
-                    const response = await fetch("https://itzogmezyvdtuhnitibj.supabase.co/auth/v1/logout", {
+                    const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/auth/v1/logout`, {
                         method: "POST",
                         headers: {
                             "apikey": apiKey,

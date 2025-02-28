@@ -85,7 +85,7 @@
             return;
         }
         try {
-            const response = await fetch(`https://itzogmezyvdtuhnitibj.supabase.co/rest/v1/rooms?id=eq.${roomId}`, {
+            const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/rest/v1/rooms?id=eq.${roomId}`, {
                 method: 'GET',
                 headers: {
                     'apikey': apiKey,

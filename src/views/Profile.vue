@@ -112,7 +112,7 @@
                 console.log("[DEBUG] Atualizando campos críticos:", changedCritical)
 
                 const response = await fetch(
-                    `https://itzogmezyvdtuhnitibj.supabase.co/auth/v1/user`,
+                    `${import.meta.env.VITE_SUPABASE_URL}/auth/v1/user`,
                     {
                         method: "PUT",
                         headers: {
@@ -146,7 +146,7 @@
                 console.log("[DEBUG] Atualizando campos não críticos:", changedNonCritical)
 
                 const response = await fetch(
-                    `https://itzogmezyvdtuhnitibj.supabase.co/rest/v1/profiles?id=eq.${userId}`,
+                    `${import.meta.env.VITE_SUPABASE_URL}/rest/v1/profiles?id=eq.${userId}`,
                     {
                         method: "PATCH",
                         headers: {
