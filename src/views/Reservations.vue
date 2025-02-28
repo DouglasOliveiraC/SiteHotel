@@ -66,7 +66,7 @@
         }
 
         try {
-            const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/rest/v1/reservations`, {
+            const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/rest/v1/rpc/get_available_rooms`, {
                 method: 'POST',
                 headers: {
                     'apikey': apiKey,
