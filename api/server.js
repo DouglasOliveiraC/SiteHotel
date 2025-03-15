@@ -1,11 +1,10 @@
-﻿//server.js
+﻿// server.js
 import express from 'express';
 import fetch from 'node-fetch';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-// Corrige __dirname para ES Modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -21,33 +20,64 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
+// Função para obter detalhes do pedido do PayPal
+async function getOrderDetailsFromPayPal(orderId) {
+    // Obter token de acesso do PayPal
+    const tokenResponse = await fetch('https://api-m.sandbox.paypal.com/v1/oauth2/token', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Accept-Language': 'en_US',
+            'Authorization': `Basic ${Buffer.from(process.env.PAYPAL_CLIENT_ID + ':' + process.env.PAYPAL_SECRET).toString('base64')}`,
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: 'grant_type=client_credentials'
+    });
+    if (!tokenResponse.ok) {
+        throw new Error('Falha ao obter token do PayPal');
+    }
+    const tokenData = await tokenResponse.json();
+    const accessToken = tokenData.access_token;
+
+    // Obter detalhes do pedido
+    const orderResponse = await fetch(`https://api-m.sandbox.paypal.com/v2/checkout/orders/${orderId}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+        }
+    });
+    if (!orderResponse.ok) {
+        throw new Error('Falha ao obter detalhes do pedido do PayPal');
+    }
+    return await orderResponse.json();
+}
+
 // Webhook para notificações do PayPal
 app.post('/webhook/paypal', async (req, res) => {
-    console.log('Notificação recebida do PayPal:', req.body);
+    console.log('Notificação recebida do PayPal:', JSON.stringify(req.body, null, 2));
 
-    // Verificar se temos um recurso válido e se é um pedido aprovado
+    // Validar se o evento é do tipo CHECKOUT.ORDER.APPROVED e se o recurso existe
     if (!req.body.resource || req.body.event_type !== 'CHECKOUT.ORDER.APPROVED') {
         console.error('Webhook inválido ou evento não suportado');
         return res.status(400).json({ error: 'Webhook inválido ou evento não suportado' });
     }
 
-    // Extrair o ID do pedido do PayPal
     const paypalOrderId = req.body.resource.id;
 
-    // Obter as informações completas do pedido da API do PayPal para obter o custom_id
     try {
-        // Aqui você precisa fazer uma chamada à API do PayPal para obter os detalhes completos do pedido
-        // incluindo o custom_id que você está esperando
+        // Obter detalhes completos do pedido a partir da API do PayPal
         const orderDetails = await getOrderDetailsFromPayPal(paypalOrderId);
+        console.log('Order details do PayPal:', JSON.stringify(orderDetails, null, 2));
 
-        // Verificar se temos o custom_id
-        const customId = orderDetails.purchase_units[0].custom_id;
+        const purchaseUnit = orderDetails.purchase_units[0];
+        const customId = purchaseUnit.custom_id;
         if (!customId) {
-            console.error('Custom ID não encontrado no pedido');
+            console.error('custom_id não encontrado no pedido');
             return res.status(400).json({ error: 'Dados personalizados ausentes' });
         }
 
-        // Processar os dados do custom_id
+        // Interpretar os dados enviados no custom_id
         let reservationData;
         try {
             reservationData = JSON.parse(customId);
@@ -56,16 +86,19 @@ app.post('/webhook/paypal', async (req, res) => {
             return res.status(400).json({ error: 'Formato dos dados inválido' });
         }
 
-        // Extrair os dados essenciais enviados no customData
         const { reservation_id, user_id, check_in, check_out, room_id } = reservationData;
         if (!reservation_id || !user_id || !check_in || !check_out || !room_id) {
+            console.error('Dados de reserva incompletos no custom_id');
             return res.status(400).json({ error: 'Dados de reserva inválidos' });
         }
 
-        // Obtém o número da transação do PayPal
-        const transaction_number = req.body.resource.id;
+        // Obter o número da transação: usa o primeiro capture se disponível ou o próprio order id
+        const transaction_number =
+            purchaseUnit.payments && purchaseUnit.payments.captures && purchaseUnit.payments.captures[0]
+                ? purchaseUnit.payments.captures[0].id
+                : paypalOrderId;
 
-        // Atualiza a reserva pendente para confirmada no Supabase
+        // Atualizar a reserva pendente no Supabase para "confirmada"
         const response = await fetch(`${process.env.VITE_SUPABASE_URL}/rest/v1/reservations?id=eq.${reservation_id}`, {
             method: 'PATCH',
             headers: {
@@ -93,42 +126,6 @@ app.post('/webhook/paypal', async (req, res) => {
         return res.status(500).json({ error: 'Erro interno do servidor' });
     }
 });
-
-// Função para obter detalhes do pedido do PayPal
-async function getOrderDetailsFromPayPal(orderId) {
-    // Obter token de acesso do PayPal
-    const tokenResponse = await fetch('https://api-m.sandbox.paypal.com/v1/oauth2/token', {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Accept-Language': 'en_US',
-            'Authorization': `Basic ${Buffer.from(process.env.PAYPAL_CLIENT_ID + ':' + process.env.PAYPAL_SECRET).toString('base64')}`
-        },
-        body: 'grant_type=client_credentials'
-    });
-
-    if (!tokenResponse.ok) {
-        throw new Error('Falha ao obter token do PayPal');
-    }
-
-    const tokenData = await tokenResponse.json();
-    const accessToken = tokenData.access_token;
-
-    // Obter detalhes do pedido
-    const orderResponse = await fetch(`https://api-m.sandbox.paypal.com/v2/checkout/orders/${orderId}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${accessToken}`
-        }
-    });
-
-    if (!orderResponse.ok) {
-        throw new Error('Falha ao obter detalhes do pedido do PayPal');
-    }
-
-    return await orderResponse.json();
-}
 
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);

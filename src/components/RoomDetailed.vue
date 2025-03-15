@@ -1,21 +1,11 @@
-﻿<!--RoomDetailed.vue-->
-
-<template>
+﻿<template>
     <div class="room-detailed">
         <!-- Layout principal -->
         <div class="main-content">
             <div class="image-column">
-                <img :src="mainImage"
-                     alt="Imagem do Quarto"
-                     class="main-image"
-                     @click="enlargeImage(mainImage)" />
+                <img :src="mainImage" alt="Imagem do Quarto" class="main-image" @click="enlargeImage(mainImage)" />
                 <div class="thumbnails" v-if="roomImages.length">
-                    <img v-for="(img, index) in roomImages"
-                         :key="index"
-                         :src="img"
-                         alt="Miniatura do Quarto"
-                         class="thumbnail"
-                         @click="enlargeImage(img)" />
+                    <img v-for="(img, index) in roomImages" :key="index" :src="img" alt="Miniatura do Quarto" class="thumbnail" @click="enlargeImage(img)" />
                 </div>
             </div>
             <div class="info-column">
@@ -24,19 +14,17 @@
                 <p class="detailed-summary" v-html="detailedSummary"></p>
                 <!-- Container para o botão do PayPal -->
                 <div id="paypal-button-container"></div>
-
                 <!-- Informações sandbox -->
                 <div class="sandbox-info">
                     <p>Este é um ambiente de testes do PayPal. Para testar o pagamento, use as credenciais abaixo:</p>
                     <ul>
                         <li><strong>Email:</strong> sb-2yfc738082087@personal.example.com</li>
-                        <li><strong>Senha:</strong> "k0J%mOQ </li>
+                        <li><strong>Senha:</strong> "k0J%mOQ</li>
                     </ul>
                     <p>Não há necessidade de cartões reais. Este é um ambiente de simulação.</p>
                 </div>
             </div>
         </div>
-
         <!-- Modal para imagem ampliada -->
         <div v-if="showModal" class="modal" @click.self="closeModal">
             <img :src="modalImage" alt="Imagem Ampliada" class="modal-image" />
@@ -50,19 +38,18 @@
     import { useRoute, useRouter } from 'vue-router';
     import { useAuthStore } from '@/stores/auth';
 
-    // Acesso à store de autenticação para obter dados do usuário (incluindo CPF, se disponível)
+    // Obter dados do usuário (incluindo CPF)
     const authStore = useAuthStore();
     const user = computed(() => authStore.user);
 
-    // Obter o ID do quarto e as datas (check-in/check-out) via rota (ou query parameters)
+    // Obter ID do quarto e datas (check_in e check_out) da rota ou query parameters
     const route = useRoute();
     const router = useRouter();
     const roomId = route.params.id;
-    // datas foram passadas como query: ?check_in=YYYY-MM-DD&check_out=YYYY-MM-DD
     const checkIn = ref(route.query.check_in || '');
     const checkOut = ref(route.query.check_out || '');
 
-    // Estado para armazenar os dados do quarto (buscados do backend)
+    // Estado para os detalhes do quarto
     const room = ref({
         id: '',
         room_number: '',
@@ -71,20 +58,17 @@
         thumbnail: ''
     });
 
-    // Função para buscar os detalhes do quarto
-    
+    // Buscar detalhes do quarto no Supabase
     async function fetchRoomDetails() {
         const apiKey = import.meta.env.VITE_SUPABASE_KEY;
         const storedSession = localStorage.getItem('supabase_session');
         const accessToken = storedSession ? JSON.parse(storedSession).access_token : null;
-
         if (!accessToken) {
             console.error('Erro de autenticação');
             alert('Erro de autenticação. Por favor, faça login novamente.');
-            router.push('/login'); // Redirect to login
+            router.push('/login');
             return;
         }
-
         try {
             const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/rest/v1/rooms?id=eq.${roomId}`, {
                 method: 'GET',
@@ -94,26 +78,23 @@
                     'Content-Type': 'application/json'
                 }
             });
-
             if (!response.ok) {
                 throw new Error(`Erro ao buscar detalhes do quarto: ${response.status} ${response.statusText}`);
             }
-
             const data = await response.json();
             if (data && data.length > 0) {
                 room.value = data[0];
             } else {
                 throw new Error('Quarto não encontrado');
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error('[DEBUG] Erro ao buscar detalhes do quarto:', error);
             alert(`Erro ao carregar detalhes do quarto: ${error.message}`);
         }
     }
 
-    // Função para criar a reserva pendente no Supabase
+    // Criar reserva pendente no Supabase e retornar seu ID
     async function createPendingReservation(): Promise<string | null> {
-        // Validar dados
         if (!checkIn.value || !checkOut.value || !user.value?.id || !room.value.id) {
             console.error('Dados incompletos para criar reserva:', {
                 checkIn: checkIn.value,
@@ -124,23 +105,18 @@
             alert('Dados de reserva incompletos. Verifique as datas e tente novamente.');
             return null;
         }
-
         const apiKey = import.meta.env.VITE_SUPABASE_KEY;
         const storedSession = localStorage.getItem('supabase_session');
         const accessToken = storedSession ? JSON.parse(storedSession).access_token : null;
-
         if (!accessToken) {
-            console.error('Erro: Sem token de autenticação. Requisição não enviada.');
+            console.error('Erro: Sem token de autenticação.');
             alert('Erro de autenticação. Por favor, faça login novamente.');
             router.push('/login');
             return null;
         }
-
-        // Formata datas
+        // Formatar datas (ISO yyyy-mm-dd)
         const formattedCheckIn = new Date(checkIn.value).toISOString().split('T')[0];
         const formattedCheckOut = new Date(checkOut.value).toISOString().split('T')[0];
-
-        // Cria objeto de reserva
         const reservationData = {
             user_id: user.value.id,
             check_in: formattedCheckIn,
@@ -149,9 +125,7 @@
             status: "pendente",
             payment_status: "pendente"
         };
-
         console.log('Enviando reserva pendente:', reservationData);
-
         try {
             const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/rest/v1/reservations`, {
                 method: 'POST',
@@ -163,19 +137,16 @@
                 },
                 body: JSON.stringify(reservationData)
             });
-
             console.log("Resposta do Supabase - Status:", response.status);
             const data = await response.json();
             console.log("Resposta JSON do Supabase:", data);
-
             if (!response.ok) {
                 console.error('Erro ao inserir reserva:', response.statusText, data);
                 alert(`Erro ao criar reserva: ${response.statusText}`);
                 return null;
             }
-
             return data[0]?.id || null;
-        } catch (error) {
+        } catch (error: any) {
             console.error('Erro inesperado ao criar reserva:', error);
             alert(`Erro ao criar reserva: ${error.message}`);
             return null;
@@ -192,7 +163,7 @@
     });
 
     /**
-     * Define uma galeria fixa de miniaturas para navegação.
+     * Galeria fixa de miniaturas.
      */
     const roomImages = computed(() => [
         '/images/RoomImages/extra_1.jpg',
@@ -201,39 +172,39 @@
     ]);
 
     /**
-     * Computa um resumo detalhado para o quarto.
+     * Resumo detalhado para o quarto.
      */
     const detailedSummary = computed(() => {
         if (!room.value.type) return '';
         const type = room.value.type.toLowerCase();
         if (type === 'premium')
             return `
-        <strong>Experimente o máximo de luxo no Quarto Premium.</strong><br><br>
-        Desfrute de uma banheira de hidromassagem privativa, sauna exclusiva e uma vista panorâmica estonteante.
-        Cada detalhe, da cama king-size aos acabamentos sofisticados, foi projetado para uma experiência única.
-        <br><br>
-        Reserve agora e sinta a exclusividade e o conforto inigualável!
-      `;
+      <strong>Experimente o máximo de luxo no Quarto Premium.</strong><br><br>
+      Desfrute de uma banheira de hidromassagem privativa, sauna exclusiva e uma vista panorâmica estonteante.
+      Cada detalhe, da cama king-size aos acabamentos sofisticados, foi projetado para uma experiência única.
+      <br><br>
+      Reserve agora e sinta a exclusividade e o conforto inigualável!
+    `;
         if (type === 'luxo')
             return `
-        <strong>Descubra a sofisticação do Quarto Luxo.</strong><br><br>
-        Com uma cama king-size ultra confortável, minibar premium, e serviço de quarto 24h,
-        este ambiente foi criado para proporcionar uma estadia relaxante e elegante.
-        <br><br>
-        Viva uma experiência de alto padrão e surpreenda-se com cada detalhe!
-      `;
+      <strong>Descubra a sofisticação do Quarto Luxo.</strong><br><br>
+      Com uma cama king-size ultra confortável, minibar premium, e serviço de quarto 24h,
+      este ambiente foi criado para proporcionar uma estadia relaxante e elegante.
+      <br><br>
+      Viva uma experiência de alto padrão e surpreenda-se com cada detalhe!
+    `;
         if (type === 'standard')
             return `
-        <strong>O Quarto Standard oferece conforto e funcionalidade.</strong><br><br>
-        Equipado com cama queen-size, ambiente climatizado e serviços essenciais,
-        ele é ideal para uma estadia prática e agradável.
-        <br><br>
-        Garanta sua reserva e desfrute de um ambiente acolhedor e eficiente!
-      `;
+      <strong>O Quarto Standard oferece conforto e funcionalidade.</strong><br><br>
+      Equipado com cama queen-size, ambiente climatizado e serviços essenciais,
+      ele é ideal para uma estadia prática e agradável.
+      <br><br>
+      Garanta sua reserva e desfrute de um ambiente acolhedor e eficiente!
+    `;
         return '';
     });
 
-    // Estados para controle da imagem principal e modal de ampliação
+    // Estados para modal de imagem
     const currentImage = ref('');
     const showModal = ref(false);
     const modalImage = ref('');
@@ -246,7 +217,7 @@
         modalImage.value = '';
     }
 
-    // Função para carregar o SDK do PayPal dinamicamente
+    // Função para carregar o SDK do PayPal
     function loadPayPalScript(clientId: string): Promise<void> {
         return new Promise((resolve, reject) => {
             if (document.getElementById('paypal-sdk')) {
@@ -263,63 +234,38 @@
     }
 
     onMounted(async () => {
-        
-        if (typeof route.query.check_in === 'string') {
-            checkIn.value = route.query.check_in;
-        }
-
-        if (typeof route.query.check_out === 'string') {
-            checkOut.value = route.query.check_out;
-        }
-
-        // Validar datas
-        if (!checkIn.value || !checkOut.value) {
-            console.warn('Datas de check-in/check-out não fornecidas nas query parameters');
-        }
-
-      
+        // Se as datas vieram via query parameters, já estão definidas
         await fetchRoomDetails();
-
-        f(!room.value.id) {
+        if (!room.value.id) {
             console.error('Não foi possível carregar os detalhes do quarto');
             alert('Erro ao carregar detalhes do quarto.');
             router.push('/reservations');
             return;
         }
-
         currentImage.value = mainImage.value;
-
         try {
-            // Carrega o PayPal SDK utilizando o Client ID do .env
             await loadPayPalScript(import.meta.env.VITE_PAYPAL_CLIENT_ID);
-            // Inicializa o botão do PayPal se o objeto estiver disponível
-
             if ((window as any).paypal) {
                 (window as any).paypal.Buttons({
                     createOrder: async (data: any, actions: any) => {
-                        // Verificar se o usuário está logado
+                        // Verificar se o usuário está logado e se as datas foram fornecidas
                         if (!user.value || !user.value.id) {
                             alert("Você precisa estar logado para fazer uma reserva.");
                             router.push('/login');
                             throw new Error("Usuário não autenticado.");
                         }
-
-                        // Verificar se temos as datas
                         if (!checkIn.value || !checkOut.value) {
                             alert("Datas de check-in e check-out são necessárias.");
                             throw new Error("Datas inválidas.");
                         }
-
-                        // Criar reserva pendente
+                        // Criar a reserva pendente e obter o ID
                         const reservationId = await createPendingReservation();
                         if (!reservationId) {
                             alert("Erro ao criar a reserva pendente.");
                             throw new Error("Reserva pendente não criada.");
                         }
-
                         console.log("ID da reserva pendente criada:", reservationId);
-
-                        // Formatar os dados para o PayPal
+                        // Montar os dados personalizados para o PayPal
                         const customData = {
                             reservation_id: reservationId,
                             user_id: user.value.id,
@@ -330,17 +276,11 @@
                             room_number: room.value.room_number,
                             status: "pendente"
                         };
-
-                        // Codificar os dados para garantir que sejam passados corretamente
                         const customIdString = JSON.stringify(customData);
                         console.log("Custom ID enviado ao PayPal:", customIdString);
-
-                        // Criar o pedido no PayPal
                         return actions.order.create({
                             purchase_units: [{
-                                amount: {
-                                    value: room.value.price.toFixed(2)
-                                },
+                                amount: { value: room.value.price.toFixed(2) },
                                 custom_id: customIdString,
                                 description: `Reserva de quarto ${room.value.room_number} - ${room.value.type}`
                             }]
@@ -349,7 +289,6 @@
                     onApprove: (data: any, actions: any) => {
                         return actions.order.capture().then((details: any) => {
                             alert('Pagamento realizado com sucesso, ' + details.payer.name.given_name + '!');
-                            // Redireciona para pagina MinhasReservas que será produzida
                             router.push('/reservations');
                         });
                     },
