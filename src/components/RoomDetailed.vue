@@ -233,74 +233,72 @@
         });
     }
 
-    onMounted(async () => {
-        // Se as datas vieram via query parameters, já estão definidas
-        await fetchRoomDetails();
-        if (!room.value.id) {
-            console.error('Não foi possível carregar os detalhes do quarto');
-            alert('Erro ao carregar detalhes do quarto.');
-            router.push('/reservations');
-            return;
-        }
-        currentImage.value = mainImage.value;
-        try {
-            await loadPayPalScript(import.meta.env.VITE_PAYPAL_CLIENT_ID);
-            if ((window as any).paypal) {
-                (window as any).paypal.Buttons({
-                    createOrder: async (data: any, actions: any) => {
-                        // Verificar se o usuário está logado e se as datas foram fornecidas
-                        if (!user.value || !user.value.id) {
-                            alert("Você precisa estar logado para fazer uma reserva.");
-                            router.push('/login');
-                            throw new Error("Usuário não autenticado.");
-                        }
-                        if (!checkIn.value || !checkOut.value) {
-                            alert("Datas de check-in e check-out são necessárias.");
-                            throw new Error("Datas inválidas.");
-                        }
-                        // Criar a reserva pendente e obter o ID
-                        const reservationId = await createPendingReservation();
-                        if (!reservationId) {
-                            alert("Erro ao criar a reserva pendente.");
-                            throw new Error("Reserva pendente não criada.");
-                        }
-                        console.log("ID da reserva pendente criada:", reservationId);
-                        // Montar os dados personalizados para o PayPal
-                        const customData = {
-                            reservation_id: reservationId,
-                            user_id: user.value.id,
-                            cpf: user.value?.cpf || "",
-                            check_in: checkIn.value,
-                            check_out: checkOut.value,
-                            room_id: room.value.id,
-                            room_number: room.value.room_number,
-                            status: "pendente"
-                        };
-                        const customIdString = JSON.stringify(customData);
-                        console.log("Custom ID enviado ao PayPal:", customIdString);
-                        return actions.order.create({
-                            purchase_units: [{
-                                amount: { value: room.value.price.toFixed(2) },
-                                custom_id: customIdString,
-                                description: `Reserva de quarto ${room.value.room_number} - ${room.value.type}`
-                            }]
-                        });
-                    },
-                    onApprove: (data: any, actions: any) => {
-                        return actions.order.capture().then((details: any) => {
-                            alert('Pagamento realizado com sucesso, ' + details.payer.name.given_name + '!');
-                            router.push('/reservations');
-                        });
-                    },
-                    onError: (err: any) => {
-                        console.error('Erro no pagamento:', err);
-                        alert('Ocorreu um erro no pagamento. Por favor, tente novamente.');
-                    }
-                }).render('#paypal-button-container');
-            }
-        } catch (error) {
-            console.error('Erro ao carregar o PayPal SDK:', error);
-        }
+    onMounted(async () => {  
+        // Se as datas vieram via query parameters, já estão definidas  
+        await fetchRoomDetails();  
+        if (!room.value.id) {  
+            console.error('Não foi possível carregar os detalhes do quarto');  
+            alert('Erro ao carregar detalhes do quarto.');  
+            router.push('/reservations');  
+            return;  
+        }  
+        currentImage.value = mainImage.value;  
+        try {  
+            await loadPayPalScript(import.meta.env.VITE_PAYPAL_CLIENT_ID);  
+            if ((window as any).paypal) {  
+                (window as any).paypal.Buttons({  
+                    createOrder: async (data: any, actions: any) => {  
+                        // Verificar se o usuário está logado e se as datas foram fornecidas  
+                        if (!user.value || !user.value.id) {  
+                            alert("Você precisa estar logado para fazer uma reserva.");  
+                            router.push('/login');  
+                            throw new Error("Usuário não autenticado.");  
+                        }  
+                        if (!checkIn.value || !checkOut.value) {  
+                            alert("Datas de check-in e check-out são necessárias.");  
+                            throw new Error("Datas inválidas.");  
+                        }  
+                        // Montar os dados personalizados para o PayPal  
+                        const customData = {  
+                            user_id: user.value.id,  
+                            cpf: user.value?.cpf || "",  
+                            check_in: checkIn.value,  
+                            check_out: checkOut.value,  
+                            room_id: room.value.id,  
+                            room_number: room.value.room_number,  
+                            status: "pendente"  
+                        };  
+                        const customIdString = JSON.stringify(customData);  
+                        console.log("Custom ID enviado ao PayPal:", customIdString);  
+                        return actions.order.create({  
+                            purchase_units: [{  
+                                amount: { value: room.value.price.toFixed(2) },  
+                                custom_id: customIdString,  
+                                description: `Reserva de quarto ${room.value.room_number} - ${room.value.type}`  
+                            }]  
+                        });  
+                    },  
+                    onApprove: async (data: any, actions: any) => {  
+                        const reservationId = await createPendingReservation();  
+                        if (!reservationId) {  
+                            alert("Erro ao criar a reserva pendente.");  
+                            throw new Error("Reserva pendente não criada.");  
+                        }  
+                        console.log("ID da reserva pendente criada:", reservationId);  
+                        return actions.order.capture().then((details: any) => {  
+                            alert('Pagamento realizado com sucesso, ' + details.payer.name.given_name + '!');  
+                            router.push('/reservations');  
+                        });  
+                    },  
+                    onError: (err: any) => {  
+                        console.error('Erro no pagamento:', err);  
+                        alert('Ocorreu um erro no pagamento. Por favor, tente novamente.');  
+                    }  
+                }).render('#paypal-button-container');  
+            }  
+        } catch (error) {  
+            console.error('Erro ao carregar o PayPal SDK:', error);  
+        }  
     });
 </script>
 
