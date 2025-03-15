@@ -32,7 +32,6 @@
                     </ul>
                     <p>Não há necessidade de cartões reais. Este é um ambiente de simulação.</p>
                 </div>
-
             </div>
         </div>
 
@@ -44,24 +43,22 @@
     </div>
 </template>
 
-
 <script setup lang="ts">
     import { ref, computed, onMounted } from 'vue';
     import { useRoute, useRouter } from 'vue-router';
+    import { useAuthStore } from '@/stores/auth';
 
-    /**
-     * RoomDetailed.vue
-     *
-     * Exibe os detalhes do quarto selecionado. O componente busca os dados reais do quarto (via fetch)
-     * e, com base no tipo, define a imagem principal e carrega uma galeria fixa de miniaturas.
-     * O resumo detalhado é renderizado com HTML para uma formatação rica, e o layout é mobile-first,
-     * adaptando-se para duas colunas em telas maiores, com a coluna de imagem centralizada verticalmente.
-     */
+    // Acesso à store de autenticação para obter dados do usuário (incluindo CPF, se disponível)
+    const authStore = useAuthStore();
+    const user = computed(() => authStore.user);
 
-    // Obter o ID do quarto a partir da rota
+    // Obter o ID do quarto e as datas (check-in/check-out) via rota (ou query parameters)
     const route = useRoute();
     const router = useRouter();
     const roomId = route.params.id;
+    // Supondo que as datas foram passadas como query: ?check_in=YYYY-MM-DD&check_out=YYYY-MM-DD
+    const checkIn = ref(route.query.check_in || '');
+    const checkOut = ref(route.query.check_out || '');
 
     // Estado para armazenar os dados do quarto (buscados do backend)
     const room = ref({
@@ -72,10 +69,7 @@
         thumbnail: ''
     });
 
-    /**
-     * Busca os detalhes reais do quarto usando fetch.
-     * O endpoint retorna um array com o quarto cujo id coincide com roomId.
-     */
+    // Função para buscar os detalhes do quarto
     async function fetchRoomDetails() {
         const apiKey = import.meta.env.VITE_SUPABASE_KEY;
         const storedSession = localStorage.getItem('supabase_session');
@@ -105,9 +99,43 @@
         }
     }
 
+    // Função para criar a reserva pendente no Supabase
+    async function createPendingReservation(): Promise<string | null> {
+        const apiKey = import.meta.env.VITE_SUPABASE_KEY;
+        const storedSession = localStorage.getItem('supabase_session');
+        const accessToken = storedSession ? JSON.parse(storedSession).access_token : null;
+        if (!accessToken) {
+            console.error('Erro de autenticação ao criar reserva pendente.');
+            return null;
+        }
+        try {
+            const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/rest/v1/reservations`, {
+                method: 'POST',
+                headers: {
+                    'apikey': apiKey,
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    user_id: user.value?.id,
+                    check_in: checkIn.value,
+                    check_out: checkOut.value,
+                    room_id: room.value.id,
+                    status: "pendente",
+                    payment_status: "pendente"
+                })
+            });
+            const data = await response.json();
+            // Supõe-se que a resposta seja um array com o registro inserido
+            return data[0]?.id || null;
+        } catch (error) {
+            console.error('[DEBUG] Erro ao criar reserva pendente:', error);
+            return null;
+        }
+    }
+
     /**
      * Computa a imagem principal do quarto com base no tipo.
-     * As imagens devem estar na pasta "/images/RoomImages/" e nomeadas como "premium.jpg", "luxo.jpg", "standard.jpg", etc.
      */
     const mainImage = computed(() => {
         if (!room.value.type) return '/images/RoomImages/default.jpg';
@@ -116,7 +144,7 @@
     });
 
     /**
-     * Define uma galeria fixa de miniaturas para navegação, que permanece a mesma para todos os quartos.
+     * Define uma galeria fixa de miniaturas para navegação.
      */
     const roomImages = computed(() => [
         '/images/RoomImages/extra_1.jpg',
@@ -125,35 +153,35 @@
     ]);
 
     /**
-     * Computa um resumo detalhado e envolvente para o quarto, utilizando HTML para formatação.
+     * Computa um resumo detalhado para o quarto.
      */
     const detailedSummary = computed(() => {
         if (!room.value.type) return '';
         const type = room.value.type.toLowerCase();
         if (type === 'premium')
             return `
-      <strong>Experimente o máximo de luxo no Quarto Premium.</strong><br><br>
-      Desfrute de uma banheira de hidromassagem privativa, sauna exclusiva e uma vista panorâmica estonteante.
-      Cada detalhe, da cama king-size aos acabamentos sofisticados, foi projetado para uma experiência única.
-      <br><br>
-      Reserve agora e sinta a exclusividade e o conforto inigualável!
-    `;
+        <strong>Experimente o máximo de luxo no Quarto Premium.</strong><br><br>
+        Desfrute de uma banheira de hidromassagem privativa, sauna exclusiva e uma vista panorâmica estonteante.
+        Cada detalhe, da cama king-size aos acabamentos sofisticados, foi projetado para uma experiência única.
+        <br><br>
+        Reserve agora e sinta a exclusividade e o conforto inigualável!
+      `;
         if (type === 'luxo')
             return `
-      <strong>Descubra a sofisticação do Quarto Luxo.</strong><br><br>
-      Com uma cama king-size ultra confortável, minibar premium, e serviço de quarto 24h,
-      este ambiente foi criado para proporcionar uma estadia relaxante e elegante.
-      <br><br>
-      Viva uma experiência de alto padrão e surpreenda-se com cada detalhe!
-    `;
+        <strong>Descubra a sofisticação do Quarto Luxo.</strong><br><br>
+        Com uma cama king-size ultra confortável, minibar premium, e serviço de quarto 24h,
+        este ambiente foi criado para proporcionar uma estadia relaxante e elegante.
+        <br><br>
+        Viva uma experiência de alto padrão e surpreenda-se com cada detalhe!
+      `;
         if (type === 'standard')
             return `
-      <strong>O Quarto Standard oferece conforto e funcionalidade.</strong><br><br>
-      Equipado com cama queen-size, ambiente climatizado e serviços essenciais,
-      ele é ideal para uma estadia prática e agradável.
-      <br><br>
-      Garanta sua reserva e desfrute de um ambiente acolhedor e eficiente!
-    `;
+        <strong>O Quarto Standard oferece conforto e funcionalidade.</strong><br><br>
+        Equipado com cama queen-size, ambiente climatizado e serviços essenciais,
+        ele é ideal para uma estadia prática e agradável.
+        <br><br>
+        Garanta sua reserva e desfrute de um ambiente acolhedor e eficiente!
+      `;
         return '';
     });
 
@@ -195,20 +223,41 @@
             // Inicializa o botão do PayPal se o objeto estiver disponível
             if ((window as any).paypal) {
                 (window as any).paypal.Buttons({
-                    createOrder: (data: any, actions: any) => {
+                    createOrder: async (data: any, actions: any) => {
+                        // Cria a reserva pendente e obtém o reservation_id
+                        const reservationId = await createPendingReservation();
+                        if (!reservationId) {
+                            alert("Erro ao criar a reserva pendente.");
+                            throw new Error("Reserva pendente não criada.");
+                        }
+
+                        // Monta os dados personalizados para enviar ao PayPal
+                        const customData = {
+                            reservation_id: reservationId,
+                            user_id: user.value?.id || "user-placeholder",
+                            cpf: user.value?.cpf || "cpf-placeholder",
+                            check_in: checkIn.value,
+                            check_out: checkOut.value,
+                            room_id: room.value.id,
+                            room_number: room.value.room_number,
+                            status: "pendente",
+                            transaction_number: ""
+                        };
+
                         return actions.order.create({
                             purchase_units: [{
                                 amount: {
-                                    // Certifique-se de que o valor esteja no formato correto (string com 2 casas decimais)
                                     value: room.value.price.toFixed(2)
-                                }
+                                },
+                                // Envia os dados personalizados via custom_id (atenção ao limite de 127 caracteres)
+                                custom_id: JSON.stringify(customData)
                             }]
                         });
                     },
                     onApprove: (data: any, actions: any) => {
                         return actions.order.capture().then((details: any) => {
                             alert('Pagamento realizado com sucesso, ' + details.payer.name.given_name + '!');
-                            // redirecionar para uma página de confirmação ou atualizar o estado da reserva
+                            // A atualização final da reserva para "confirmada" será feita via webhook do PayPal.
                         });
                     },
                     onError: (err: any) => {
@@ -224,7 +273,7 @@
 </script>
 
 <style scoped>
-    /* Informaçoes sandbox */
+    /* (Estilos permanecem inalterados) */
     .sandbox-info {
         background: #fffae6;
         padding: 10px;
@@ -233,7 +282,6 @@
         font-size: 14px;
     }
 
-    /* Estilo base Mobile-First */
     .room-detailed {
         max-width: 100%;
         margin: 1rem auto;
@@ -242,14 +290,12 @@
         color: #333;
     }
 
-    /* Layout principal: coluna única para mobile */
     .main-content {
         display: flex;
         flex-direction: column;
         gap: 1rem;
     }
 
-    /* Coluna da imagem (inclui a galeria abaixo) */
     .image-column {
         width: 100%;
         padding: 0.5rem;
@@ -266,7 +312,6 @@
         margin-bottom: 0.5rem;
     }
 
-    /* Galeria de miniaturas: fica logo abaixo da imagem principal */
     .thumbnails {
         display: flex;
         justify-content: center;
@@ -287,7 +332,6 @@
             transform: scale(1.05);
         }
 
-    /* Coluna de informações */
     .info-column {
         width: 100%;
         padding: 0.5rem;
@@ -310,7 +354,6 @@
         line-height: 1.5;
     }
 
-    /* Botão para prosseguir com a reserva */
     .proceed-btn {
         background: #28a745;
         color: white;
@@ -327,7 +370,6 @@
             background: #218838;
         }
 
-    /* Modal para imagem ampliada */
     .modal {
         position: fixed;
         top: 0;
@@ -360,7 +402,6 @@
         cursor: pointer;
     }
 
-    /* Layout para telas maiores (Desktop) */
     @media (min-width: 768px) {
         .room-detailed {
             max-width: 1000px;
@@ -371,7 +412,7 @@
         .main-content {
             flex-direction: row;
             gap: 2rem;
-            align-items: center; /* Alinha verticalmente os itens para centralizar a coluna de imagem se necessário */
+            align-items: center;
         }
 
         .image-column {
