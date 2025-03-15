@@ -297,49 +297,52 @@
             if ((window as any).paypal) {
                 (window as any).paypal.Buttons({
                     createOrder: async (data: any, actions: any) => {
-                        // Valida usuario logado
+                        // Verificar se o usuário está logado
                         if (!user.value || !user.value.id) {
                             alert("Você precisa estar logado para fazer uma reserva.");
                             router.push('/login');
                             throw new Error("Usuário não autenticado.");
                         }
 
-                        // Valida datas
+                        // Verificar se temos as datas
                         if (!checkIn.value || !checkOut.value) {
                             alert("Datas de check-in e check-out são necessárias.");
                             throw new Error("Datas inválidas.");
                         }
 
-                        // Cria reserva pendente
+                        // Criar reserva pendente
                         const reservationId = await createPendingReservation();
                         if (!reservationId) {
                             alert("Erro ao criar a reserva pendente.");
                             throw new Error("Reserva pendente não criada.");
                         }
 
-                        // Formato de datas
-                        const formattedCheckIn = new Date(checkIn.value).toISOString().split('T')[0];
-                        const formattedCheckOut = new Date(checkOut.value).toISOString().split('T')[0];
+                        console.log("ID da reserva pendente criada:", reservationId);
 
-                        // Cria datas custom
+                        // Formatar os dados para o PayPal
                         const customData = {
                             reservation_id: reservationId,
                             user_id: user.value.id,
                             cpf: user.value?.cpf || "",
-                            check_in: formattedCheckIn,
-                            check_out: formattedCheckOut,
+                            check_in: checkIn.value,
+                            check_out: checkOut.value,
                             room_id: room.value.id,
                             room_number: room.value.room_number,
-                            status: "pendente",
-                            transaction_number: ""
+                            status: "pendente"
                         };
 
+                        // Codificar os dados para garantir que sejam passados corretamente
+                        const customIdString = JSON.stringify(customData);
+                        console.log("Custom ID enviado ao PayPal:", customIdString);
+
+                        // Criar o pedido no PayPal
                         return actions.order.create({
                             purchase_units: [{
                                 amount: {
                                     value: room.value.price.toFixed(2)
                                 },
-                                custom_id: JSON.stringify(customData)
+                                custom_id: customIdString,
+                                description: `Reserva de quarto ${room.value.room_number} - ${room.value.type}`
                             }]
                         });
                     },
