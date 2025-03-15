@@ -1,4 +1,6 @@
-﻿<template>
+﻿<!--RoomDetailed.vue-->
+
+<template>
     <div class="room-detailed">
         <!-- Layout principal -->
         <div class="main-content">
@@ -56,7 +58,7 @@
     const route = useRoute();
     const router = useRouter();
     const roomId = route.params.id;
-    // Supondo que as datas foram passadas como query: ?check_in=YYYY-MM-DD&check_out=YYYY-MM-DD
+    // datas foram passadas como query: ?check_in=YYYY-MM-DD&check_out=YYYY-MM-DD
     const checkIn = ref(route.query.check_in || '');
     const checkOut = ref(route.query.check_out || '');
 
@@ -70,14 +72,19 @@
     });
 
     // Função para buscar os detalhes do quarto
+    
     async function fetchRoomDetails() {
         const apiKey = import.meta.env.VITE_SUPABASE_KEY;
         const storedSession = localStorage.getItem('supabase_session');
         const accessToken = storedSession ? JSON.parse(storedSession).access_token : null;
+
         if (!accessToken) {
             console.error('Erro de autenticação');
+            alert('Erro de autenticação. Por favor, faça login novamente.');
+            router.push('/login'); // Redirect to login
             return;
         }
+
         try {
             const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/rest/v1/rooms?id=eq.${roomId}`, {
                 method: 'GET',
@@ -87,27 +94,64 @@
                     'Content-Type': 'application/json'
                 }
             });
+
             if (!response.ok) {
                 throw new Error(`Erro ao buscar detalhes do quarto: ${response.status} ${response.statusText}`);
             }
+
             const data = await response.json();
             if (data && data.length > 0) {
                 room.value = data[0];
+            } else {
+                throw new Error('Quarto não encontrado');
             }
-        } catch (error: any) {
+        } catch (error) {
             console.error('[DEBUG] Erro ao buscar detalhes do quarto:', error);
+            alert(`Erro ao carregar detalhes do quarto: ${error.message}`);
         }
     }
 
     // Função para criar a reserva pendente no Supabase
     async function createPendingReservation(): Promise<string | null> {
+        // Validar dados
+        if (!checkIn.value || !checkOut.value || !user.value?.id || !room.value.id) {
+            console.error('Dados incompletos para criar reserva:', {
+                checkIn: checkIn.value,
+                checkOut: checkOut.value,
+                userId: user.value?.id,
+                roomId: room.value.id
+            });
+            alert('Dados de reserva incompletos. Verifique as datas e tente novamente.');
+            return null;
+        }
+
         const apiKey = import.meta.env.VITE_SUPABASE_KEY;
         const storedSession = localStorage.getItem('supabase_session');
         const accessToken = storedSession ? JSON.parse(storedSession).access_token : null;
+
         if (!accessToken) {
-            console.error('Erro de autenticação ao criar reserva pendente.');
+            console.error('Erro: Sem token de autenticação. Requisição não enviada.');
+            alert('Erro de autenticação. Por favor, faça login novamente.');
+            router.push('/login');
             return null;
         }
+
+        // Formata datas
+        const formattedCheckIn = new Date(checkIn.value).toISOString().split('T')[0];
+        const formattedCheckOut = new Date(checkOut.value).toISOString().split('T')[0];
+
+        // Cria objeto de reserva
+        const reservationData = {
+            user_id: user.value.id,
+            check_in: formattedCheckIn,
+            check_out: formattedCheckOut,
+            room_id: room.value.id,
+            status: "pendente",
+            payment_status: "pendente"
+        };
+
+        console.log('Enviando reserva pendente:', reservationData);
+
         try {
             const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/rest/v1/reservations`, {
                 method: 'POST',
@@ -115,27 +159,25 @@
                     'apikey': apiKey,
                     'Authorization': `Bearer ${accessToken}`,
                     'Content-Type': 'application/json',
-                    'Prefer': 'return=representation'  // Essa linha garante que o registro inserido seja retornado
+                    'Prefer': 'return=representation'
                 },
-                body: JSON.stringify({
-                    user_id: user.value?.id,
-                    check_in: checkIn.value,
-                    check_out: checkOut.value,
-                    room_id: room.value.id,
-                    status: "pendente",
-                    payment_status: "pendente"
-                })
+                body: JSON.stringify(reservationData)
             });
-            // Verifica se a resposta foi ok e faz o parse do JSON
+
+            console.log("Resposta do Supabase - Status:", response.status);
+            const data = await response.json();
+            console.log("Resposta JSON do Supabase:", data);
+
             if (!response.ok) {
-                console.error('Erro ao criar reserva pendente:', response.statusText);
+                console.error('Erro ao inserir reserva:', response.statusText, data);
+                alert(`Erro ao criar reserva: ${response.statusText}`);
                 return null;
             }
-            const data = await response.json();
-            // Supõe-se que a resposta seja um array com o registro inserido
+
             return data[0]?.id || null;
         } catch (error) {
-            console.error('[DEBUG] Erro ao criar reserva pendente:', error);
+            console.error('Erro inesperado ao criar reserva:', error);
+            alert(`Erro ao criar reserva: ${error.message}`);
             return null;
         }
     }
@@ -221,29 +263,71 @@
     }
 
     onMounted(async () => {
+        
+        if (typeof route.query.check_in === 'string') {
+            checkIn.value = route.query.check_in;
+        }
+
+        if (typeof route.query.check_out === 'string') {
+            checkOut.value = route.query.check_out;
+        }
+
+        // Validar datas
+        if (!checkIn.value || !checkOut.value) {
+            console.warn('Datas de check-in/check-out não fornecidas nas query parameters');
+        }
+
+      
         await fetchRoomDetails();
+
+        f(!room.value.id) {
+            console.error('Não foi possível carregar os detalhes do quarto');
+            alert('Erro ao carregar detalhes do quarto.');
+            router.push('/reservations');
+            return;
+        }
+
         currentImage.value = mainImage.value;
+
         try {
             // Carrega o PayPal SDK utilizando o Client ID do .env
             await loadPayPalScript(import.meta.env.VITE_PAYPAL_CLIENT_ID);
             // Inicializa o botão do PayPal se o objeto estiver disponível
+
             if ((window as any).paypal) {
                 (window as any).paypal.Buttons({
                     createOrder: async (data: any, actions: any) => {
-                        // Cria a reserva pendente e obtém o reservation_id
+                        // Valida usuario logado
+                        if (!user.value || !user.value.id) {
+                            alert("Você precisa estar logado para fazer uma reserva.");
+                            router.push('/login');
+                            throw new Error("Usuário não autenticado.");
+                        }
+
+                        // Valida datas
+                        if (!checkIn.value || !checkOut.value) {
+                            alert("Datas de check-in e check-out são necessárias.");
+                            throw new Error("Datas inválidas.");
+                        }
+
+                        // Cria reserva pendente
                         const reservationId = await createPendingReservation();
                         if (!reservationId) {
                             alert("Erro ao criar a reserva pendente.");
                             throw new Error("Reserva pendente não criada.");
                         }
 
-                        // Monta os dados personalizados para enviar ao PayPal
+                        // Formato de datas
+                        const formattedCheckIn = new Date(checkIn.value).toISOString().split('T')[0];
+                        const formattedCheckOut = new Date(checkOut.value).toISOString().split('T')[0];
+
+                        // Cria datas custom
                         const customData = {
                             reservation_id: reservationId,
-                            user_id: user.value?.id || "user-placeholder",
-                            cpf: user.value?.cpf || "cpf-placeholder",
-                            check_in: checkIn.value,
-                            check_out: checkOut.value,
+                            user_id: user.value.id,
+                            cpf: user.value?.cpf || "",
+                            check_in: formattedCheckIn,
+                            check_out: formattedCheckOut,
                             room_id: room.value.id,
                             room_number: room.value.room_number,
                             status: "pendente",
@@ -255,7 +339,6 @@
                                 amount: {
                                     value: room.value.price.toFixed(2)
                                 },
-                                // Converte os dados personalizados em string e envia via custom_id 
                                 custom_id: JSON.stringify(customData)
                             }]
                         });
@@ -263,7 +346,8 @@
                     onApprove: (data: any, actions: any) => {
                         return actions.order.capture().then((details: any) => {
                             alert('Pagamento realizado com sucesso, ' + details.payer.name.given_name + '!');
-                            // A atualização final da reserva para "confirmada" será feita via webhook do PayPal.
+                            // Redireciona para pagina MinhasReservas que será produzida
+                            router.push('/reservations');
                         });
                     },
                     onError: (err: any) => {
