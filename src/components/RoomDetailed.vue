@@ -114,7 +114,8 @@
                 headers: {
                     'apikey': apiKey,
                     'Authorization': `Bearer ${accessToken}`,
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Prefer': 'return=representation'  // Essa linha garante que o registro inserido seja retornado
                 },
                 body: JSON.stringify({
                     user_id: user.value?.id,
@@ -125,6 +126,11 @@
                     payment_status: "pendente"
                 })
             });
+            // Verifica se a resposta foi ok e faz o parse do JSON
+            if (!response.ok) {
+                console.error('Erro ao criar reserva pendente:', response.statusText);
+                return null;
+            }
             const data = await response.json();
             // Supõe-se que a resposta seja um array com o registro inserido
             return data[0]?.id || null;
@@ -249,7 +255,7 @@
                                 amount: {
                                     value: room.value.price.toFixed(2)
                                 },
-                                // Envia os dados personalizados via custom_id (atenção ao limite de 127 caracteres)
+                                // Converte os dados personalizados em string e envia via custom_id 
                                 custom_id: JSON.stringify(customData)
                             }]
                         });
