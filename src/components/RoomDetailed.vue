@@ -285,11 +285,25 @@
                         });
                     },
                     onApprove: (data: any, actions: any) => {
-                        return actions.order.capture().then((details: any) => {
-                            alert('Pagamento realizado com sucesso, ' + details.payer.name.given_name + '!');
-                            router.push('/reservations');
-                        });
+                        // Chama o endpoint do seu servidor para capturar o pedido
+                        return fetch('/api/paypal/order/capture', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ orderID: data.orderID })
+                        })
+                            .then(res => res.json())
+                            .then(json => {
+                                alert('Pagamento realizado com sucesso!');
+                                router.push('/reservations');
+                            })
+                            .catch(err => {
+                                console.error('Erro ao capturar o pedido:', err);
+                                alert('Erro ao capturar o pedido. Tente novamente.');
+                            });
                     },
+
                     onError: (err: any) => {
                         console.error('Erro no pagamento:', err);
                         alert('Ocorreu um erro no pagamento. Por favor, tente novamente.');

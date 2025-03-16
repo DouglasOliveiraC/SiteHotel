@@ -127,6 +127,56 @@ app.post('/webhook/paypal', async (req, res) => {
     }
 });
 
+// Endpoint para capturar o pedido do PayPal
+app.post('/api/paypal/order/capture', async (req, res) => {
+    const { orderID } = req.body;
+    if (!orderID) {
+        return res.status(400).json({ error: 'orderID é obrigatório' });
+    }
+
+    try {
+        // Obter token de acesso do PayPal
+        const tokenResponse = await fetch('https://api-m.sandbox.paypal.com/v1/oauth2/token', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Accept-Language': 'en_US',
+                'Authorization': `Basic ${Buffer.from(process.env.PAYPAL_CLIENT_ID + ':' + process.env.PAYPAL_SECRET).toString('base64')}`,
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'grant_type=client_credentials'
+        });
+
+        if (!tokenResponse.ok) {
+            throw new Error('Falha ao obter token do PayPal');
+        }
+
+        const tokenData = await tokenResponse.json();
+        const accessToken = tokenData.access_token;
+
+        // Chamar a API de captura do PayPal
+        const captureResponse = await fetch(`https://api-m.sandbox.paypal.com/v2/checkout/orders/${orderID}/capture`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
+
+        if (!captureResponse.ok) {
+            const err = await captureResponse.text();
+            throw new Error(err);
+        }
+
+        const captureData = await captureResponse.json();
+        res.json(captureData);
+    } catch (error) {
+        console.error('Erro ao capturar o pedido:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
 });
