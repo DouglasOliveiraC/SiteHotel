@@ -22,6 +22,9 @@
                         <li><strong>Senha:</strong> "k0J%mOQ</li>
                     </ul>
                     <p>Não há necessidade de cartões reais. Este é um ambiente de simulação.</p>
+                    <button style="position: relative; z-index: 9999;" @click="testReservationCreation">
+                        Testar criação de reserva
+                    </button>
                 </div>
             </div>
         </div>
@@ -31,9 +34,7 @@
             <button class="close-modal" @click="closeModal">X</button>
         </div>
         <!-- Botão de teste para criar reserva pendente (para depuração) -->
-        <button style="position: relative; z-index: 9999;" @click="testReservationCreation">
-            Testar criação de reserva
-        </button>
+        
     </div>
 </template>
 
