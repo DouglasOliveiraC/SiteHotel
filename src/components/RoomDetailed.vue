@@ -5,7 +5,12 @@
             <div class="image-column">
                 <img :src="mainImage" alt="Imagem do Quarto" class="main-image" @click="enlargeImage(mainImage)" />
                 <div class="thumbnails" v-if="roomImages.length">
-                    <img v-for="(img, index) in roomImages" :key="index" :src="img" alt="Miniatura do Quarto" class="thumbnail" @click="enlargeImage(img)" />
+                    <img v-for="(img, index) in roomImages"
+                         :key="index"
+                         :src="img"
+                         alt="Miniatura do Quarto"
+                         class="thumbnail"
+                         @click="enlargeImage(img)" />
                 </div>
             </div>
             <div class="info-column">
@@ -16,15 +21,15 @@
                 <div id="paypal-button-container"></div>
                 <!-- Informações sandbox -->
                 <div class="sandbox-info">
-                    <p>Este é um ambiente de testes do PayPal. Para testar o pagamento, use as credenciais abaixo:</p>
+                    <p>
+                        Este é um ambiente de testes do PayPal. Para testar o pagamento, use as credenciais
+                        abaixo:
+                    </p>
                     <ul>
                         <li><strong>Email:</strong> sb-2yfc738082087@personal.example.com</li>
                         <li><strong>Senha:</strong> "k0J%mOQ</li>
                     </ul>
                     <p>Não há necessidade de cartões reais. Este é um ambiente de simulação.</p>
-                    <button style="position: relative; z-index: 9999;" @click="testReservationCreation">
-                        Testar criação de reserva
-                    </button>
                 </div>
             </div>
         </div>
@@ -33,8 +38,10 @@
             <img :src="modalImage" alt="Imagem Ampliada" class="modal-image" />
             <button class="close-modal" @click="closeModal">X</button>
         </div>
-        <!-- Botão de teste para criar reserva pendente (para depuração) -->
-        
+        <!-- Botão de teste para criar reserva (fora do fluxo do PayPal) -->
+        <button class="test-button" @click="testReservationCreation">
+            Testar criação de reserva
+        </button>
     </div>
 </template>
 
@@ -43,11 +50,11 @@
     import { useRoute, useRouter } from 'vue-router';
     import { useAuthStore } from '@/stores/auth';
 
-    // Dados do usuário (incluindo CPF)
+    // Obter dados do usuário (incluindo CPF)
     const authStore = useAuthStore();
     const user = computed(() => authStore.user);
 
-    // Obter ID do quarto e datas da rota (ou query parameters)
+    // Obter ID do quarto e datas (check_in e check_out) da rota (ou query parameters)
     const route = useRoute();
     const router = useRouter();
     const roomId = route.params.id;
@@ -63,7 +70,7 @@
         thumbnail: ''
     });
 
-    // Buscar detalhes do quarto no Supabase
+    // Buscar detalhes do quarto no Supabase via fetch
     async function fetchRoomDetails() {
         const apiKey = import.meta.env.VITE_SUPABASE_KEY;
         const storedSession = localStorage.getItem('supabase_session');
@@ -98,7 +105,7 @@
         }
     }
 
-    // Criar reserva pendente usando fetch e retornar seu ID
+    // Criar reserva pendente via fetch e retornar seu ID
     async function createPendingReservation(): Promise<string | null> {
         if (!checkIn.value || !checkOut.value || !user.value?.id || !room.value.id) {
             console.error('Dados incompletos para criar reserva:', {
@@ -119,7 +126,6 @@
             router.push('/login');
             return null;
         }
-        // Formatar datas
         const formattedCheckIn = new Date(checkIn.value).toISOString().split('T')[0];
         const formattedCheckOut = new Date(checkOut.value).toISOString().split('T')[0];
         const reservationData = {
@@ -158,17 +164,16 @@
         }
     }
 
-    // Função de teste para criar reserva pendente manualmente (opcional)
+    // Função de teste para criação de reserva pendente
     async function testReservationCreation() {
-      const result = await createPendingReservation();
-      console.log("Resultado da criação de reserva (teste):", result);
-      if (result) {
-        alert(`Reserva pendente criada com ID: ${result}`);
-      } else {
-        alert("Falha ao criar reserva pendente.");
-      }
+        const result = await createPendingReservation();
+        console.log("Resultado da criação de reserva (teste):", result);
+        if (result) {
+            alert(`Reserva pendente criada com ID: ${result}`);
+        } else {
+            alert("Falha ao criar reserva pendente.");
+        }
     }
-    
 
     // Computa a imagem principal do quarto com base no tipo
     const mainImage = computed(() => {
@@ -228,7 +233,7 @@
         modalImage.value = '';
     }
 
-    // Função para carregar o SDK do PayPal com checkout inline (commit=true)
+    // Função para carregar o SDK do PayPal
     function loadPayPalScript(clientId: string): Promise<void> {
         return new Promise((resolve, reject) => {
             if (document.getElementById('paypal-sdk')) {
@@ -237,8 +242,9 @@
             }
             const script = document.createElement('script');
             script.id = 'paypal-sdk';
-            // Adicionando commit=true para evitar a abertura de popup
-            script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=BRL&commit=true`;
+            // Removemos commit=true da URL para tentar forçar o checkout inline,
+            // e configuramos commit: true no objeto do PayPal
+            script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=BRL`;
             script.onload = () => resolve();
             script.onerror = () => reject(new Error('Falha ao carregar o script do PayPal'));
             document.head.appendChild(script);
@@ -258,6 +264,10 @@
             await loadPayPalScript(import.meta.env.VITE_PAYPAL_CLIENT_ID);
             if ((window as any).paypal) {
                 (window as any).paypal.Buttons({
+                    commit: true, // Configura para confirmar o pagamento no mesmo fluxo
+                    style: {
+                        layout: 'vertical'
+                    },
                     createOrder: async (data: any, actions: any) => {
                         if (!user.value || !user.value.id) {
                             alert("Você precisa estar logado para fazer uma reserva.");
@@ -315,7 +325,7 @@
 </script>
 
 <style scoped>
-    /* (Os estilos permanecem inalterados) */
+    /* Estilos gerais */
     .sandbox-info {
         background: #fffae6;
         padding: 10px;
@@ -418,7 +428,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0,0,0,0.8);
+        background: rgba(0, 0, 0, 0.8);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -443,6 +453,23 @@
         font-size: 1.2rem;
         cursor: pointer;
     }
+    /* Botão de teste fixo */
+    .test-button {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        z-index: 9999;
+        padding: 10px 20px;
+        background: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        .test-button:hover {
+            background: #0056b3;
+        }
 
     @media (min-width: 768px) {
         .room-detailed {
