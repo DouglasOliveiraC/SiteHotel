@@ -30,6 +30,8 @@
             <img :src="modalImage" alt="Imagem Ampliada" class="modal-image" />
             <button class="close-modal" @click="closeModal">X</button>
         </div>
+        <!-- Botão de teste para criar reserva pendente (para depuração) -->
+        <button @click="testReservationCreation">Testar criação de reserva</button>
     </div>
 </template>
 
@@ -38,7 +40,7 @@
     import { useRoute, useRouter } from 'vue-router';
     import { useAuthStore } from '@/stores/auth';
 
-    // Obter dados do usuário (incluindo CPF)
+    // Dados do usuário (incluindo CPF)
     const authStore = useAuthStore();
     const user = computed(() => authStore.user);
 
@@ -93,7 +95,7 @@
         }
     }
 
-    // Criar reserva pendente no Supabase e retornar seu ID
+    // Criar reserva pendente usando fetch e retornar seu ID
     async function createPendingReservation(): Promise<string | null> {
         if (!checkIn.value || !checkOut.value || !user.value?.id || !room.value.id) {
             console.error('Dados incompletos para criar reserva:', {
@@ -114,6 +116,7 @@
             router.push('/login');
             return null;
         }
+        // Formatar datas
         const formattedCheckIn = new Date(checkIn.value).toISOString().split('T')[0];
         const formattedCheckOut = new Date(checkOut.value).toISOString().split('T')[0];
         const reservationData = {
@@ -152,27 +155,33 @@
         }
     }
 
-    /**
-     * Computa a imagem principal do quarto com base no tipo.
-     */
+    // Função de teste para criar reserva pendente manualmente (opcional)
+    async function testReservationCreation() {
+      const result = await createPendingReservation();
+      console.log("Resultado da criação de reserva (teste):", result);
+      if (result) {
+        alert(`Reserva pendente criada com ID: ${result}`);
+      } else {
+        alert("Falha ao criar reserva pendente.");
+      }
+    }
+    
+
+    // Computa a imagem principal do quarto com base no tipo
     const mainImage = computed(() => {
         if (!room.value.type) return '/images/RoomImages/default.jpg';
         const type = room.value.type.toLowerCase();
         return `/images/RoomImages/${type}.jpg`;
     });
 
-    /**
-     * Galeria fixa de miniaturas.
-     */
+    // Galeria fixa de miniaturas
     const roomImages = computed(() => [
         '/images/RoomImages/extra_1.jpg',
         '/images/RoomImages/extra_2.jpg',
         '/images/RoomImages/extra_3.jpg'
     ]);
 
-    /**
-     * Resumo detalhado para o quarto.
-     */
+    // Resumo detalhado para o quarto
     const detailedSummary = computed(() => {
         if (!room.value.type) return '';
         const type = room.value.type.toLowerCase();
@@ -216,7 +225,7 @@
         modalImage.value = '';
     }
 
-    // Função para carregar o SDK do PayPal
+    // Função para carregar o SDK do PayPal com checkout inline (commit=true)
     function loadPayPalScript(clientId: string): Promise<void> {
         return new Promise((resolve, reject) => {
             if (document.getElementById('paypal-sdk')) {
@@ -225,7 +234,8 @@
             }
             const script = document.createElement('script');
             script.id = 'paypal-sdk';
-            script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=BRL`;
+            // Adicionando commit=true para evitar a abertura de popup
+            script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=BRL&commit=true`;
             script.onload = () => resolve();
             script.onerror = () => reject(new Error('Falha ao carregar o script do PayPal'));
             document.head.appendChild(script);
@@ -246,7 +256,6 @@
             if ((window as any).paypal) {
                 (window as any).paypal.Buttons({
                     createOrder: async (data: any, actions: any) => {
-                        // Verificar se o usuário está logado e se as datas foram fornecidas
                         if (!user.value || !user.value.id) {
                             alert("Você precisa estar logado para fazer uma reserva.");
                             router.push('/login');
@@ -256,14 +265,14 @@
                             alert("Datas de check-in e check-out são necessárias.");
                             throw new Error("Datas inválidas.");
                         }
-                        // Criar a reserva pendente antes de enviar o pedido para o PayPal
+                        // Criar a reserva pendente e obter seu ID
                         const reservationId = await createPendingReservation();
                         if (!reservationId) {
                             alert("Erro ao criar a reserva pendente.");
                             throw new Error("Reserva pendente não criada.");
                         }
                         console.log("ID da reserva pendente criada:", reservationId);
-                        // Montar os dados personalizados para enviar ao PayPal (incluindo o reservation_id)
+                        // Montar os dados personalizados para enviar ao PayPal
                         const customData = {
                             reservation_id: reservationId,
                             user_id: user.value.id,
@@ -285,25 +294,11 @@
                         });
                     },
                     onApprove: (data: any, actions: any) => {
-                        // Chama o endpoint do seu servidor para capturar o pedido
-                        return fetch('/api/paypal/order/capture', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({ orderID: data.orderID })
-                        })
-                            .then(res => res.json())
-                            .then(json => {
-                                alert('Pagamento realizado com sucesso!');
-                                router.push('/reservations');
-                            })
-                            .catch(err => {
-                                console.error('Erro ao capturar o pedido:', err);
-                                alert('Erro ao capturar o pedido. Tente novamente.');
-                            });
+                        return actions.order.capture().then((details: any) => {
+                            alert('Pagamento realizado com sucesso, ' + details.payer.name.given_name + '!');
+                            router.push('/reservations');
+                        });
                     },
-
                     onError: (err: any) => {
                         console.error('Erro no pagamento:', err);
                         alert('Ocorreu um erro no pagamento. Por favor, tente novamente.');
@@ -317,7 +312,7 @@
 </script>
 
 <style scoped>
-    /* (Estilos permanecem inalterados) */
+    /* (Os estilos permanecem inalterados) */
     .sandbox-info {
         background: #fffae6;
         padding: 10px;
