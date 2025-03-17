@@ -31,7 +31,9 @@
             <button class="close-modal" @click="closeModal">X</button>
         </div>
         <!-- Botão de teste para criar reserva pendente (para depuração) -->
-        <button @click="testReservationCreation">Testar criação de reserva</button>
+        <button style="position: relative; z-index: 9999;" @click="testReservationCreation">
+            Testar criação de reserva
+        </button>
     </div>
 </template>
 
