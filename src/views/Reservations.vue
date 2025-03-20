@@ -129,7 +129,7 @@
      * Redireciona o usuário para visualizar suas reservas antigas.
      */
     function goToMyReservations() {
-        router.push('/my-reservations');
+        router.push({ name: 'MyReservations' });
     }
 
     /**
