@@ -6,6 +6,7 @@ import TermsOfUse from '@/views/TermsOfUse.vue';
 import PrivacyPolicy from '@/views/PrivacyPolicy.vue';
 import ContactView from '@/views/ContactView.vue';
 import AuthCallback from '@/views/AuthCallback.vue';
+import MyReservations from '@/views/MyReservations.vue';
 import { useAuthStore } from '@/stores/auth';
 
 // Rotas protegidas por autenticação
